@@ -1,0 +1,70 @@
+{
+  "name": "SwiftEasyKit",
+  "version": "0.0.1",
+  "summary": "SwiftEasyKit: A Swift libraries for easy develop apps.",
+  "description": "A Swift libraries for easy develop apps. Try to build an workflow in iOS app development.",
+  "homepage": "https://github.com/cactis/SwiftEasyKit",
+  "license": "MIT",
+  "authors": {
+    "cactis": "cactis.lin@gmail.com"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source": {
+    "git": "https://github.com/cactis/SwiftEasyKit.git",
+    "tag": "0.0.1"
+  },
+  "source_files": "Source/**/*.swift",
+  "public_header_files": "Classes/**/*.h",
+  "dependencies": {
+    "Alamofire": [
+
+    ],
+    "Bond": [
+
+    ],
+    "Facade": [
+
+    ],
+    "Fakery": [
+
+    ],
+    "FontAwesome.swift": [
+
+    ],
+    "JSQMessagesViewController": [
+
+    ],
+    "KeychainSwift": [
+
+    ],
+    "Kingfisher": [
+
+    ],
+    "LoremIpsum": [
+
+    ],
+    "Masonry": [
+
+    ],
+    "Neon": [
+
+    ],
+    "ObjectMapper": [
+
+    ],
+    "PhotoSlider": [
+
+    ],
+    "RSKImageCropper": [
+
+    ],
+    "SwiftRandom": [
+
+    ],
+    "SwiftyJSON": [
+
+    ]
+  }
+}

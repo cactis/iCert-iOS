@@ -1,0 +1,6 @@
+framework module SwiftEasyKit {
+  umbrella header "SwiftEasyKit-umbrella.h"
+
+  export *
+  module * { export * }
+}

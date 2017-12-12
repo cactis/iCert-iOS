@@ -1,0 +1,8 @@
+.DS_Store
+Pods
+*.app.dSYM.zip
+*.ipa
+Development.swift
+tmp
+fastlane
+Podfile.lock
