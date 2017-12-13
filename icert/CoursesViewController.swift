@@ -27,17 +27,15 @@ class CoursesViewController: ApplicationTableViewController {
       self.tabBarController?.selectedIndex = 1
     }
   }
-  override func loadData() {
-    API.get("/courses") { (response) in
-      self.collectionData = (response.result.value as! [[String: AnyObject]]).map { Course(JSON: $0)! }
-    }
-  }
 
   override func layoutUI() {
     super.layoutUI()
     tableView = tableView(CourseCell.self, identifier: CellIdentifier)
     view.layout([tableView])
+//    addLeftBarButtonItem(UIImage(named: "Image")!, action: #selector(accountTapped))
   }
+
+  @objc func accountTapped() {}
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) as! CourseCell
@@ -49,29 +47,47 @@ class CoursesViewController: ApplicationTableViewController {
     return collectionData.count
   }
 
+  override func loadData() {
+    API.get("/courses") { (response) in
+      self.collectionData = (response.result.value as! [[String: AnyObject]]).map { Course(JSON: $0)! }
+    }
+  }
+
   class CourseCell: TableViewCell {
     var title = UILabel()
     var cert = UILabel("結業證書")
     var hasCert = IconLabel(iconImage: nil, text: "")
     var percentage = UILabel()
+    var hours = UILabel()
 
     var data: Course! { didSet {
       title.texted(data.title!)
       hasCert.isHidden = !data.hasCert!
       cert.isHidden = !data.hasCert!
-      percentage.texted("課程進度:\(data.percentage!)% | 總時數:\(data.hours!)")
+      percentage.texted("課程進度: \(data.percentage!)%")
+      hours.texted("總時數: \(data.hours!)")
       }}
 
     override func layoutUI() {
       super.layoutUI()
-      layout([title, cert, hasCert, percentage])
+      layout([title, cert, hasCert, hours, percentage])
     }
     override func styleUI() {
       super.styleUI()
       title.asTitle().multilinized()
       cert.styled().smaller(2).lighter().multilinized(2).centered()
       percentage.styled()
+      hours.styled()
       hasCert.image = getIcon(.check, options: ["color": K.Color.tabBarBackgroundColor])
+    }
+    override func bindUI() {
+      super.bindUI()
+      percentage.whenTapped(self, action: #selector(percentageTapped))
+    }
+    @objc func percentageTapped() {
+      API.put("/courses/\(data.id!)/go") { (response) in
+        self.data = Course(JSON: response.result.value as! [String: AnyObject])!
+      }
     }
     override func layoutSubviews() {
       super.layoutSubviews()
@@ -79,7 +95,8 @@ class CoursesViewController: ApplicationTableViewController {
       let w = cert.leftEdge() - 10
       title.anchorInCorner(.topLeft, xPad: 10, yPad: 10, width: w, height: title.getHeightBySizeThatFitsWithWidth(w))
       hasCert.alignUnder(cert, matchingCenterWithTopPadding: -5, width: cert.width, height: cert.width)
-      percentage.alignUnder(title, matchingLeftWithTopPadding: 10, width: percentage.textWidth(), height: percentage.textHeight())
+      hours.alignUnder(title, matchingLeftWithTopPadding: 10, width: 90, height: hours.textHeight())
+      percentage.align(toTheRightOf: hours, matchingTopWithLeftPadding: 10, width: 150, height: percentage.textHeight())
     }
   }
 }

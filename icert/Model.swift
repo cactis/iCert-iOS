@@ -63,12 +63,14 @@ class BaseMappable: Mappable {
   var updatedAt: Date?
   var state: String?
   var status: String?
+  var alert: String?
   func mapping(map: Map) {
     id <- map["id"]
     state <- map["state"]
     status <- map["status"]
     createdAt <- (map["created_at"], DateTransform())
     updatedAt <- (map["updated_at"], DateTransform())
+    alert <- map["alert"]
   }
 
   required init?(map: Map) {}

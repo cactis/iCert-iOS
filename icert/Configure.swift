@@ -35,6 +35,7 @@ class Configure {
     K.Color.table = UIColor.white
     K.Color.navigator = UIColor.fromRGB(119, green: 203, blue: 215)
     K.Color.tabBarBackgroundColor = UIColor.fromHex("FFCC00")
+    K.Color.buttonBg = K.Color.tabBarBackgroundColor
   }
 }
 
