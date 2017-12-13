@@ -19,6 +19,7 @@
 		3729D4D41FDF784F00F79A43 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D4D31FDF784F00F79A43 /* Model.swift */; };
 		37B0742B1FDF98D400800720 /* UdollarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B0742A1FDF98D400800720 /* UdollarsViewController.swift */; };
 		37B0742D1FDFCE1900800720 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37B0742C1FDFCE1900800720 /* Launch Screen.storyboard */; };
+		37F5BADC1FE15B5E0050864D /* PapersSegmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F5BADB1FE15B5E0050864D /* PapersSegmentViewController.swift */; };
 		5962C3435A74C0F259C59CFC /* Pods_icert.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FA5861481844841CE938BEC /* Pods_icert.framework */; };
 		CA71E571FE4DCB5E8A9CE9AA /* Pods_icertTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56F118077144BE49F8BC9949 /* Pods_icertTests.framework */; };
 		EC758C8906977EC7C6733319 /* Pods_icertUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 965BB47426D55439358045F8 /* Pods_icertUITests.framework */; };
@@ -63,6 +64,7 @@
 		37B0742A1FDF98D400800720 /* UdollarsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UdollarsViewController.swift; sourceTree = "<group>"; };
 		37B0742C1FDFCE1900800720 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		37B0742E1FDFF87000800720 /* icert.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = icert.entitlements; sourceTree = "<group>"; };
+		37F5BADB1FE15B5E0050864D /* PapersSegmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PapersSegmentViewController.swift; sourceTree = "<group>"; };
 		38373D8EB29E924E24458E61 /* Pods-icertUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-icertUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-icertUITests/Pods-icertUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		56F118077144BE49F8BC9949 /* Pods_icertTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_icertTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		58575D6244D59D34E9E41AB9 /* Pods-icertTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-icertTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-icertTests/Pods-icertTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			children = (
 				37B0742E1FDFF87000800720 /* icert.entitlements */,
 				3729D4991FDEB80400F79A43 /* AppDelegate.swift */,
+				37F5BADB1FE15B5E0050864D /* PapersSegmentViewController.swift */,
 				3729D4D11FDECB0C00F79A43 /* LocalDevelopment.swift */,
 				3729D4CB1FDEC05200F79A43 /* CertsViewController.swift */,
 				3729D49B1FDEB80400F79A43 /* ViewController.swift */,
@@ -528,6 +531,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3729D4CC1FDEC05200F79A43 /* CertsViewController.swift in Sources */,
+				37F5BADC1FE15B5E0050864D /* PapersSegmentViewController.swift in Sources */,
 				3729D49C1FDEB80400F79A43 /* ViewController.swift in Sources */,
 				3729D4D41FDF784F00F79A43 /* Model.swift in Sources */,
 				3729D49A1FDEB80400F79A43 /* AppDelegate.swift in Sources */,

@@ -19,7 +19,6 @@ class CartsSegmentViewController: SegmentViewController {
     _autoRun {
       self.segment.tappedAtIndex(1)
     }
-    (0...titles.count - 1).forEach { (index) in collectionDatas.append([]) }
   }
 
   override func layoutUI() {
@@ -36,12 +35,23 @@ class CartsSegmentViewController: SegmentViewController {
     loadData()
   }
 
+  override func styleUI() {
+    super.styleUI()
+    segmentHeight = 50
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    segment.layoutSubviews() // !!!!
+  }
+
   func loadData() {
     API.get("/certs") { (response) in
+      self.collectionDatas = []
       let values = response.result.value as! [String: AnyObject]
-      self.collectionDatas[0] = (values["draft"] as! [[String: AnyObject]]).map { Cert(JSON: $0)! }
-      self.collectionDatas[1] = (values["unconfirmed"] as! [[String: AnyObject]]).map { Cert(JSON: $0)! }
-      self.collectionDatas[2] = (values["confirmed"] as! [[String: AnyObject]]).map { Cert(JSON: $0)! }
+      self.actions.forEach({ (action) in
+        self.collectionDatas.append((values[action] as! [[String: AnyObject]]).map { Cert(JSON: $0)! })
+      })
       self.tableViews.forEach({
         let index = self.tableViews.index(of: $0)!
         $0.reloadData()
@@ -65,8 +75,6 @@ class CartsSegmentViewController: SegmentViewController {
     default:
       break
     }
-    
-//    cell.needsUpdateConstraints()
     cell.layoutIfNeeded()
     cell.layoutSubviews()
     cell.didDataUpdated = { data in
@@ -91,17 +99,7 @@ class CartsSegmentViewController: SegmentViewController {
 
   override func insertDataToCollectionData(currentIndex: Int, targetIndex: Int, indexPath: IndexPath) { self.collectionDatas[targetIndex].insert(self.collectionDatas[currentIndex][indexPath.row], at: 0) }
   
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return collectionDatas[tableViews.index(of: tableView)!].count }
-
-  override func styleUI() {
-    super.styleUI()
-    segmentHeight = 50
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    segment.layoutSubviews() // !!!!
-  }
+  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return collectionDatas.count > 0 ? collectionDatas[tableViews.index(of: tableView)!].count : 0 }
 
 }
 
@@ -111,12 +109,19 @@ class ConfirmedCell: CertBaseCell {
   override func layoutUI() {
     super.layoutUI()
     layout([footer.layout([toolbar])])
-    bottomView = footer
   }
   override func styleUI() {
     super.styleUI()
     toolbar.priButton.texted("申請正本")
-    //    footer.backgroundColored(UIColor.lightGray)
+    status.isHidden = true
+  }
+  override func bindUI() {
+    super.bindUI()
+    toolbar.priButton.whenTapped {
+      API.post("/certs/\(self.data.id!)/papers", run: { (response) in
+
+      })
+    }
   }
   override func layoutSubviews() {
     super.layoutSubviews()
@@ -127,23 +132,7 @@ class ConfirmedCell: CertBaseCell {
     footer.shadowed(UIColor.lightGray, offset: CGSize(width: 2, height: 15))
   }
 
-  class Toolbar: DefaultView {
-    var priButton = UIButton()
-    override func layoutUI() {
-      super.layoutUI()
-      layout([priButton])
-    }
-    override func styleUI() {
-      super.styleUI()
-      priButton.styledAsSubmit()
-      backgroundColored(UIColor.white)
-    }
-    override func layoutSubviews() {
-      super.layoutSubviews()
-      priButton.anchorAndFillEdge(.right, xPad: 10, yPad: 10, otherSize: priButton.textWidth() * 1.5)
-      fillSuperview(left: 0, right: 0, top: 0, bottom: 10)
-    }
-  }
+
 }
 
 class UnconfirmedCell: CertCell {
@@ -164,39 +153,65 @@ class UnconfirmedCell: CertCell {
 }
 class CertCell: CertBaseCell { }
 
-class CertBaseCell: TableViewCell {
+class CertBaseCell: BaseStatusCell {
 
   var data: Cert! { didSet {
     title.texted(data.title!)
     expiredInfo.texted("到期日: \(data.expiredInfo!)")
     status.texted(data.status!)
-//    layoutSubviews()
-//    layoutIfNeeded()
-    updateConstraintsIfNeeded()
     }}
-  var body = DefaultView()
-  var title = UILabel()
   var expiredInfo = UILabel()
-  var status = UILabel()
-
   override func layoutUI() {
     super.layoutUI()
-    layout([body.layout([title, status, expiredInfo])])
+    body.layout([expiredInfo])
   }
   override func styleUI() {
     super.styleUI()
-    title.asTitle()
-    status.styled().smaller().centered()
     expiredInfo.styled().smaller()
+  }
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    expiredInfo.alignUnder(title, matchingLeftWithTopPadding: 10, width: expiredInfo.textWidth(), height: expiredInfo.textHeight())
+    body.anchorAndFillEdge(.top, xPad: 0, yPad: 0, otherSize: expiredInfo.bottomEdge())
+  }
+}
+
+class BaseStatusCell: BaseCell {
+  var status = UILabel()
+  override func layoutUI() {
+    super.layoutUI()
+    body.layout([status])
+  }
+  override func styleUI() {
+    super.styleUI()
+    status.styled().smaller().centered()
   }
   override func layoutSubviews() {
     super.layoutSubviews()
     status.anchorAndFillEdge(.right, xPad: 10, yPad: 0, otherSize: 60)
     title.anchorInCorner(.topLeft, xPad: 10, yPad: 10, width: status.leftEdge() - 20, height: title.textHeight())
-    expiredInfo.alignUnder(title, matchingLeftWithTopPadding: 10, width: expiredInfo.textWidth(), height: expiredInfo.textHeight())
-    body.anchorAndFillEdge(.top, xPad: 0, yPad: 0, otherSize: expiredInfo.bottomEdge())
   }
 }
+
+class BaseCell: TableViewCell {
+  var body = DefaultView()
+  var title = UILabel()
+  override func layoutUI() {
+    super.layoutUI()
+    layout([body.layout([title])])
+  }
+  override func styleUI() {
+    super.styleUI()
+    title.asTitle()
+  }
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    title.anchorAndFillEdge(.top, xPad: 10, yPad: 10, otherSize: title.textHeight())
+    body.anchorAndFillEdge(.top, xPad: 0, yPad: 0, otherSize: bottomView.bottomEdge())
+  }
+}
+
+
 
 extension UILabel {
   @discardableResult func asTitle() -> UILabel {

@@ -43,7 +43,13 @@ class Course: BaseMappable {
 }
 
 
-
+class Paper: BaseMappable {
+  var title: String?
+  override func mapping(map: Map) {
+    super.mapping(map: map)
+    title <- map["cert.title"]
+  }
+}
 
 class Cert: BaseMappable {
   var title: String?
@@ -64,6 +70,8 @@ class BaseMappable: Mappable {
   var state: String?
   var status: String?
   var alert: String?
+  var priButton: String?
+  var nextEvent: String?
   func mapping(map: Map) {
     id <- map["id"]
     state <- map["state"]
@@ -71,6 +79,8 @@ class BaseMappable: Mappable {
     createdAt <- (map["created_at"], DateTransform())
     updatedAt <- (map["updated_at"], DateTransform())
     alert <- map["alert"]
+    priButton <- map["pri_button"]
+    nextEvent <- map["next_event"]
   }
 
   required init?(map: Map) {}

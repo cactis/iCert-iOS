@@ -32,9 +32,9 @@ class AppDelegate: DefaultAppDelegate {
     (window, tabBarViewController) = SwiftEasyKit.enableTabBarController(self, viewControllers:
       [CoursesViewController(),
        CartsSegmentViewController(), //CertsViewController(),
-        ViewController(),
+        PapersSegmentViewController(),
         UdollarsViewController()], titles:
-      ["修課中", "我的證書", "正本申請", "我的帳戶"], images: images, selectedImages: selectedImages
+      ["修課中", "我的證書", "申請追蹤", "我的帳戶"], images: images, selectedImages: selectedImages
     )
     window?.backgroundColor = UIColor.darkGray.lighter()
     window?.layer.contents = UIImage(named: "background")?.cgImage
