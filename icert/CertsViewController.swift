@@ -9,8 +9,7 @@
 import SwiftEasyKit
 import ObjectMapper
 
-
-class CartsSegmentViewController: SegmentViewController {
+class CartsSegmentViewController: ApplicationSegmentViewController {
   let titles = ["尚未結業", "審核中", "已核發"]
   let actions = ["draft", "unconfirmed", "confirmed"]
   var collectionDatas = [[Cert]]()
@@ -30,22 +29,7 @@ class CartsSegmentViewController: SegmentViewController {
     super.layoutUI()
   }
 
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    loadData()
-  }
-
-  override func styleUI() {
-    super.styleUI()
-    segmentHeight = 50
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    segment.layoutSubviews() // !!!!
-  }
-
-  func loadData() {
+  override func loadData() {
     API.get("/certs") { (response) in
       self.collectionDatas = []
       let values = response.result.value as! [String: AnyObject]
@@ -136,19 +120,23 @@ class ConfirmedCell: CertBaseCell {
 }
 
 class UnconfirmedCell: CertCell {
+
+  override var data: Cert! { didSet {
+    status.texted(data.status)
+    }}
   override func bindUI() {
     super.bindUI()
     status.whenTapped(self, action: #selector(statusTapped))
   }
   @objc func statusTapped() {
-    alert(self, title: "審核通過", message: "確定發佈本證書？", okHandler: { (action) in
+//    alert(self, title: "審核通過", message: "確定發佈本證書？", okHandler: { (action) in
       API.post("/certs/\(self.data.id!)/confirm!", run: { (response) in
         self.data = Cert(JSON: response.result.value as! [String: AnyObject])!
         self.didDataUpdated(self.data)
       })
-    }) { (action) in
-
-    }
+//    }) { (action) in
+//
+//    }
   }
 }
 class CertCell: CertBaseCell { }
@@ -158,7 +146,7 @@ class CertBaseCell: BaseStatusCell {
   var data: Cert! { didSet {
     title.texted(data.title!)
     expiredInfo.texted("到期日: \(data.expiredInfo!)")
-    status.texted(data.status!)
+//    status.texted(data.status!)
     }}
   var expiredInfo = UILabel()
   override func layoutUI() {
@@ -177,18 +165,18 @@ class CertBaseCell: BaseStatusCell {
 }
 
 class BaseStatusCell: BaseCell {
-  var status = UILabel()
+  var status = UIButton()
   override func layoutUI() {
     super.layoutUI()
     body.layout([status])
   }
   override func styleUI() {
     super.styleUI()
-    status.styled().smaller().centered()
+    status.styledAsSubButton()
   }
   override func layoutSubviews() {
     super.layoutSubviews()
-    status.anchorAndFillEdge(.right, xPad: 10, yPad: 0, otherSize: 60)
+    status.anchorAndFillEdge(.right, xPad: 10, yPad: 10, otherSize: status.textWidth() * 1.5)
     title.anchorInCorner(.topLeft, xPad: 10, yPad: 10, width: status.leftEdge() - 20, height: title.textHeight())
   }
 }

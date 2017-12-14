@@ -26,7 +26,7 @@ class AppDelegate: DefaultAppDelegate {
   }
 
   func boot() {
-    let icons: [FontAwesome] = [.calendar, .idCardO, .print, .userO]
+    let icons: [FontAwesome] = [.calendar, .idCardO, .print, .dollar]
     let images = [icon(icons[0]), icon(icons[1]), icon(icons[2]), icon(icons[3])]
     let selectedImages = [icon(icons[0], selected: true), icon(icons[1], selected: true), icon(icons[2], selected: true), icon(icons[3], selected: true)]
     (window, tabBarViewController) = SwiftEasyKit.enableTabBarController(self, viewControllers:
@@ -34,7 +34,7 @@ class AppDelegate: DefaultAppDelegate {
        CartsSegmentViewController(), //CertsViewController(),
         PapersSegmentViewController(),
         UdollarsViewController()], titles:
-      ["修課中", "我的證書", "申請追蹤", "我的帳戶"], images: images, selectedImages: selectedImages
+      ["修課清單", "我的證書", "申請追蹤", "UDollar"], images: images, selectedImages: selectedImages
     )
     window?.backgroundColor = UIColor.darkGray.lighter()
     window?.layer.contents = UIImage(named: "background")?.cgImage
@@ -55,6 +55,16 @@ class AppDelegate: DefaultAppDelegate {
         currentViewController.openViewController(vc, completion: {
           delayedJob(1) { vc.segment.tappedAtIndex(2) }
         })
+      case "unpaid":
+        let vc = PapersSegmentViewController()
+        vc.enableCloseBarButtonItem()
+        currentViewController.openViewController(vc, completion: {
+//          delayedJob(1) { vc.segment.tappedAtIndex(1) }
+        })
+      case "udollar":
+        let vc = UdollarsViewController()
+        vc.enableCloseBarButtonItem()
+        currentViewController.openViewController(vc)
       default:break;
       }
     }
@@ -73,7 +83,7 @@ class AppDelegate: DefaultAppDelegate {
 
   func icon(_ name: FontAwesome, selected: Bool = false) -> UIImage {
     let size = 30
-    let color = !selected ? UIColor.darkGray.lighter() : UIColor.black.lighter()
+    let color = !selected ? UIColor.darkGray.lighter(0.3) : UIColor.black.lighter()
     return getIcon(name, options: ["color": color, "size": size])
   }
 

@@ -10,11 +10,13 @@ import SwiftEasyKit
 
 class UdollarsViewController: ApplicationTableViewController {
 
+  let head = HeadView()
   var collectionData = [Udollar]() { didSet { tableView.reloadData() } }
 
   override func loadData() {
     API.get("/udollars") { (response) in
       self.collectionData = (response.result.value as! [[String: AnyObject]]).map { Udollar(JSON: $0)! }
+      self.head.data = self.collectionData.first?.balance ?? 0
     }
   }
 
@@ -22,6 +24,40 @@ class UdollarsViewController: ApplicationTableViewController {
     super.layoutUI()
     tableView = tableView(UdollarCell.self, identifier: CellIdentifier)
     view.layout([tableView])
+  }
+
+  class HeadView: DefaultView {
+    var b = DefaultView()
+    var balance = UILabel()
+    var data: Int? { didSet {
+      balance.texted("$ \(String(describing: data!))")
+      layoutSubviews()
+      }}
+
+    override func layoutUI() {
+      layout([b.layout([balance])])
+    }
+    override func styleUI() {
+      super.styleUI()
+      backgroundColored(UIColor.white)
+      let color = K.Color.tabBarBackgroundColor
+      b.radiused(3).bordered(2, color: color.cgColor)
+      balance.styled().larger(2).colored(color).centered().bold()
+    }
+
+    override func layoutSubviews() {
+      super.layoutSubviews()
+      b.fillSuperview(left: 100, right: 100, top: 30, bottom: 30)
+      balance.anchorInCenter(width: balance.textWidth(), height: balance.textHeight())
+    }
+  }
+
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    return head
+  }
+
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return 100
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -46,8 +82,8 @@ class UdollarsViewController: ApplicationTableViewController {
     var data: Udollar! { didSet {
       title.texted(data.title!)
       message.texted(data.message!)
-      payment.texted("\(data.payment! > 0 ? "+" : "-")\(data.payment!)")
-      balance.texted("餘額: \(data.balance!)")
+      payment.texted("\(data.payment! > 0 ? "+" : "")\(data.payment!)").larger(2).darker()
+      balance.texted("餘額: \(data.balance!)").larger(3)
       date.texted(data.createdAt!.toString())
       }}
 
@@ -61,7 +97,7 @@ class UdollarsViewController: ApplicationTableViewController {
       title.asTitle()
       message.styled().multilinized()
       payment.styled().smaller().lighter()
-      balance.styled().bold().lighter()
+      balance.styled().bold().lighter().aligned(.right)
       date.styled()
     }
 
@@ -70,8 +106,9 @@ class UdollarsViewController: ApplicationTableViewController {
       title.anchorInCorner(.topLeft, xPad: 10, yPad: 20, width: width() - 80, height: title.textHeight())
       message.alignUnder(title, matchingLeftAndRightWithTopPadding: 5, height: message.getHeightBySizeThatFitsWithWidth(title.width))
       payment.anchorInCorner(.topRight, xPad: 10, yPad: 20, width: payment.textWidth(), height: payment.textHeight())
-      balance.alignUnder(payment, matchingRightWithTopPadding: 40, width: balance.textWidth(), height: balance.textHeight())
+
       date.alignUnder(message, matchingLeftWithTopPadding: 10, width: date.textWidth(), height: date.textHeight())
+      balance.align(toTheRightOf: date, fillingWidthWithLeftAndRightPadding: 10, topPadding: date.topEdge(), height: balance.textHeight())
     }
   }
 }

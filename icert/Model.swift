@@ -30,6 +30,7 @@ class Course: BaseMappable {
   var endDate: Date?
   var hours: Int?
   var percentage: Int?
+  var percentageDesc: String?
 
   override func mapping(map: Map) {
     super.mapping(map: map)
@@ -39,6 +40,7 @@ class Course: BaseMappable {
     endDate <- map["end_date"]
     hours <- map["hours"]
     percentage <- map["percentage"]
+    percentageDesc <- map["percentage_desc"]
   }
 }
 
@@ -71,6 +73,7 @@ class BaseMappable: Mappable {
   var status: String?
   var alert: String?
   var priButton: String?
+  var subButton: String?
   var nextEvent: String?
   func mapping(map: Map) {
     id <- map["id"]
@@ -80,6 +83,7 @@ class BaseMappable: Mappable {
     updatedAt <- (map["updated_at"], DateTransform())
     alert <- map["alert"]
     priButton <- map["pri_button"]
+    subButton <- map["sub_button"]
     nextEvent <- map["next_event"]
   }
 

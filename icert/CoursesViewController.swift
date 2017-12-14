@@ -24,7 +24,7 @@ class CoursesViewController: ApplicationTableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     _autoRun {
-      self.tabBarController?.selectedIndex = 2
+      self.tabBarController?.selectedIndex = 3
     }
   }
 
@@ -32,10 +32,19 @@ class CoursesViewController: ApplicationTableViewController {
     super.layoutUI()
     tableView = tableView(CourseCell.self, identifier: CellIdentifier)
     view.layout([tableView])
-//    addLeftBarButtonItem(UIImage(named: "Image")!, action: #selector(accountTapped))
+    addRightBarButtonItem(getIcon(.plus), action: #selector(plusTapped))
+    addLeftBarButtonItem(getIcon(.recycle), action: #selector(resetTapped))
   }
-
-  @objc func accountTapped() {}
+  @objc func resetTapped() {
+    API.post("/courses/reset") { (response) in
+      self.viewWillAppear(true)
+    }
+  }
+  @objc func plusTapped() {
+    API.post("/courses") { (response) in
+      self.collectionData.insert(Course(JSON: response.result.value as! [String: AnyObject])!, at: 0)
+    }
+  }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) as! CourseCell
@@ -64,7 +73,7 @@ class CoursesViewController: ApplicationTableViewController {
       title.texted(data.title!)
       hasCert.isHidden = !data.hasCert!
       cert.isHidden = !data.hasCert!
-      percentage.texted("課程進度: \(data.percentage!)%")
+      percentage.texted(data.percentageDesc)
       hours.texted("總時數: \(data.hours!)")
       }}
 
@@ -96,7 +105,7 @@ class CoursesViewController: ApplicationTableViewController {
       title.anchorInCorner(.topLeft, xPad: 10, yPad: 10, width: w, height: title.getHeightBySizeThatFitsWithWidth(w))
       hasCert.alignUnder(cert, matchingCenterWithTopPadding: -5, width: cert.width, height: cert.width)
       hours.alignUnder(title, matchingLeftWithTopPadding: 10, width: 90, height: hours.textHeight())
-      percentage.align(toTheRightOf: hours, matchingTopWithLeftPadding: 10, width: 150, height: percentage.textHeight())
+      percentage.align(toTheRightOf: hours, matchingTopWithLeftPadding: 10, width: 200, height: percentage.textHeight())
     }
   }
 }

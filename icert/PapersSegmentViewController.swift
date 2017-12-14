@@ -8,8 +8,28 @@
 
 import SwiftEasyKit
 
-class PapersSegmentViewController: SegmentViewController {
-  let titles = ["待付款", "待輸出", "待寄送", "待收件", "待評價", "已結案"]
+class ApplicationSegmentViewController: SegmentViewController {
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    loadData()
+  }
+
+  func loadData() {}
+
+  override func styleUI() {
+    super.styleUI()
+    segmentHeight = 50
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    segment.layoutSubviews() // !!!!
+  }
+}
+
+class PapersSegmentViewController: ApplicationSegmentViewController {
+  let titles = ["待付款", "輸出中", "集件中", "待取件", "待評價", "已結案"]
   let actions = ["unpaid", "printable", "deliverable", "receivable", "rateable", "closed"]
   var collectionDatas = [[Paper]]()
   override func viewDidLoad() {
@@ -32,22 +52,7 @@ class PapersSegmentViewController: SegmentViewController {
     super.layoutUI()
   }
 
-  override func styleUI() {
-    super.styleUI()
-    segmentHeight = 50
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-    segment.layoutSubviews() // !!!!
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    loadData()
-  }
-
-  func loadData() {
+  override func loadData() {
     API.get("/papers") { (response) in
       self.collectionDatas = []
       let values = response.result.value as! [String: AnyObject]
@@ -69,6 +74,7 @@ class PapersSegmentViewController: SegmentViewController {
     cell.layoutIfNeeded()
     cell.layoutSubviews()
     cell.didDataUpdated = { data in
+
       if let paper = data as? Paper {
         self.collectionDatas[index][indexPath.row] = paper
 //        switch index {
@@ -76,6 +82,7 @@ class PapersSegmentViewController: SegmentViewController {
           self.moveCellTo(currentIndex: index, targetIndex: index + 1, indexPath: indexPath)
 //        default: break
 //        }
+
       }
     }
     return cell
@@ -83,7 +90,7 @@ class PapersSegmentViewController: SegmentViewController {
 
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 //    let index = tableViews.index(of: tableView)!
-    return 120 //[100, 100, 160][index]
+    return 150 //[100, 100, 160][index]
   }
 
   override func removeDataFromCollectionData(tableView: UITableView, indexPath: IndexPath) { collectionDatas[tableViews.index(of: tableView)!].remove(at: indexPath.row) }
@@ -98,17 +105,23 @@ class PaperCell: BodyFooterCell {
     didSet {
       title.texted(data.title)
       toolbar.priButton.texted(data.priButton)
+      toolbar.subButton.texted(data.subButton)
+      toolbar.layoutIfNeeded()
       layoutSubviews()
     }
   }
   override func bindUI() {
     super.bindUI()
-    toolbar.priButton.whenTapped {
+    [toolbar.priButton, toolbar.subButton].forEach { $0.whenTapped {
       if let action = self.data.nextEvent {
         API.post("/papers/\(self.data.id!)/\(action)!", run: { (response) in
-          self.data = Paper(JSON: response.result.value as! [String: AnyObject])!
-          self.didDataUpdated(self.data)
+          delayedJob (1) {
+            if let paper = Paper(JSON: response.result.value as! [String: AnyObject]) {
+              self.didDataUpdated(paper)
+            }
+          }
         })
+      }
       }
     }
   }
@@ -124,6 +137,7 @@ class BodyFooterCell: BaseCell {
   override func styleUI() {
     super.styleUI()
     toolbar.priButton.texted("操作鍵")
+    toolbar.subButton.texted("次操作鍵")
   }
   override func layoutSubviews() {
     super.layoutSubviews()
@@ -132,24 +146,28 @@ class BodyFooterCell: BaseCell {
     footer.topBordered()
     toolbar.bottomBordered(UIColor.lightGray.lighter(0.1), width: 1, padding: 0)
     toolbar.layoutSubviews()
+    footer.bottomBordered()
     footer.shadowed(UIColor.lightGray, offset: CGSize(width: 2, height: 15))
   }
 }
 
 class Toolbar: DefaultView {
   var priButton = UIButton()
+  var subButton = UIButton()
   override func layoutUI() {
     super.layoutUI()
-    layout([priButton])
+    layout([priButton, subButton])
   }
   override func styleUI() {
     super.styleUI()
-    priButton.styledAsSubmit().colored(UIColor.black)
+    priButton.styledAsSubmit()
+    subButton.styledAsSubButton()
     backgroundColored(UIColor.white)
   }
   override func layoutSubviews() {
     super.layoutSubviews()
-    priButton.anchorAndFillEdge(.right, xPad: 10, yPad: 10, otherSize: priButton.textWidth() * 1.5)
+    priButton.anchorAndFillEdge(.right, xPad: 10, yPad: 10, otherSize: priButton.textWidth() * 2)
+    subButton.align(toTheLeftOf: priButton, matchingTopWithRightPadding: [priButton.width, 10].min()!, width: subButton.textWidth() * 2, height: priButton.height)
     fillSuperview(left: 0, right: 0, top: 0, bottom: 10)
   }
 }
