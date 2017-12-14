@@ -44,12 +44,13 @@ class Course: BaseMappable {
   }
 }
 
-
 class Paper: BaseMappable {
   var title: String?
+  var receiveAt: Date?
   override func mapping(map: Map) {
     super.mapping(map: map)
     title <- map["cert.title"]
+    receiveAt <- (map["receive_at"], DateTransform())
   }
 }
 

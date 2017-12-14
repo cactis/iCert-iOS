@@ -24,7 +24,7 @@ class CoursesViewController: ApplicationTableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     _autoRun {
-      self.tabBarController?.selectedIndex = 3
+      self.tabBarController?.selectedIndex = 2
     }
   }
 

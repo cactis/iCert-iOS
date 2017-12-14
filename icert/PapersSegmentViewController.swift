@@ -35,7 +35,7 @@ class PapersSegmentViewController: ApplicationSegmentViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     _autoRun {
-//      self.segment.tappedAtIndex(2)
+      self.segment.tappedAtIndex(5)
     }
 
   }
@@ -47,7 +47,7 @@ class PapersSegmentViewController: ApplicationSegmentViewController {
     tableViews.append(tableView(PaperCell.self, identifier: CellIdentifier))
     tableViews.append(tableView(PaperCell.self, identifier: CellIdentifier))
     tableViews.append(tableView(PaperCell.self, identifier: CellIdentifier))
-    tableViews.append(tableView(PaperCell.self, identifier: CellIdentifier))
+    tableViews.append(tableView(PaperClosedCell.self, identifier: CellIdentifier))
     loadData()
     super.layoutUI()
   }
@@ -69,27 +69,27 @@ class PapersSegmentViewController: ApplicationSegmentViewController {
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let index = tableViews.index(of: tableView)!
-    cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) as! PaperCell
+    switch index {
+    case 5:
+      cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) as! PaperClosedCell
+      (cell as! PaperClosedCell).data = collectionDatas[index][indexPath.row]
+    default:
+      cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) as! PaperCell
       (cell as! PaperCell).data = collectionDatas[index][indexPath.row]
+    }
     cell.layoutIfNeeded()
     cell.layoutSubviews()
     cell.didDataUpdated = { data in
-
       if let paper = data as? Paper {
         self.collectionDatas[index][indexPath.row] = paper
-//        switch index {
-//        case 1:
-          self.moveCellTo(currentIndex: index, targetIndex: index + 1, indexPath: indexPath)
-//        default: break
-//        }
-
+        self.moveCellTo(currentIndex: index, targetIndex: index + 1, indexPath: indexPath)
       }
     }
     return cell
   }
 
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//    let index = tableViews.index(of: tableView)!
+    //    let index = tableViews.index(of: tableView)!
     return 150 //[100, 100, 160][index]
   }
 
@@ -98,6 +98,26 @@ class PapersSegmentViewController: ApplicationSegmentViewController {
   override func insertDataToCollectionData(currentIndex: Int, targetIndex: Int, indexPath: IndexPath) { self.collectionDatas[targetIndex].insert(self.collectionDatas[currentIndex][indexPath.row], at: 0) }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return collectionDatas.count > 0 ? collectionDatas[tableViews.index(of: tableView)!].count : 0 }
+}
+
+class PaperClosedCell: PaperCell {
+  var date = UILabel()
+  override var data: Paper! { didSet {
+    date.texted("已於 \((data.receiveAt?.toString())!) 領取")
+//    layoutSubviews()
+    }}
+  override func layoutUI() {
+    super.layoutUI()
+    body.layout([date])
+  }
+  override func styleUI() {
+    super.styleUI()
+    date.styled()
+  }
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    date.alignUnder(title, matchingLeftWithTopPadding: 10, width: date.textWidth(), height: date.textHeight())
+  }
 }
 
 class PaperCell: BodyFooterCell {
@@ -141,7 +161,7 @@ class BodyFooterCell: BaseCell {
   }
   override func layoutSubviews() {
     super.layoutSubviews()
-    body.anchorAndFillEdge(.top, xPad: 0, yPad: 0, otherSize: title.bottomEdge() + 20)
+    body.anchorAndFillEdge(.top, xPad: 0, yPad: 0, otherSize: (body.bottomView?.bottomEdge())! + 20)
     footer.alignUnder(body, centeredFillingWidthWithLeftAndRightPadding: 0, topPadding: 20, height: 60)
     footer.topBordered()
     toolbar.bottomBordered(UIColor.lightGray.lighter(0.1), width: 1, padding: 0)

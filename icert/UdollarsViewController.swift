@@ -42,12 +42,12 @@ class UdollarsViewController: ApplicationTableViewController {
       backgroundColored(UIColor.white)
       let color = K.Color.tabBarBackgroundColor
       b.radiused(3).bordered(2, color: color.cgColor)
-      balance.styled().larger(2).colored(color).centered().bold()
+      balance.styled().larger(5).colored(color).centered().bold()
     }
 
     override func layoutSubviews() {
       super.layoutSubviews()
-      b.fillSuperview(left: 100, right: 100, top: 30, bottom: 30)
+      b.fillSuperview(left: 100, right: 100, top: 20, bottom: 20)
       balance.anchorInCenter(width: balance.textWidth(), height: balance.textHeight())
     }
   }
@@ -57,7 +57,7 @@ class UdollarsViewController: ApplicationTableViewController {
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    return 100
+    return 80
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -82,8 +82,8 @@ class UdollarsViewController: ApplicationTableViewController {
     var data: Udollar! { didSet {
       title.texted(data.title!)
       message.texted(data.message!)
-      payment.texted("\(data.payment! > 0 ? "+" : "")\(data.payment!)").larger(2).darker()
-      balance.texted("餘額: \(data.balance!)").larger(3)
+      payment.texted("\(data.payment! > 0 ? "+" : "")\(data.payment!)")
+      balance.texted("餘額: \(data.balance!)")
       date.texted(data.createdAt!.toString())
       }}
 
@@ -96,8 +96,8 @@ class UdollarsViewController: ApplicationTableViewController {
       super.styleUI()
       title.asTitle()
       message.styled().multilinized()
-      payment.styled().smaller().lighter()
-      balance.styled().bold().lighter().aligned(.right)
+      payment.styled().lighter().larger(2).bold()
+      balance.styled().bold().larger(2).aligned(.right)
       date.styled()
     }
 
