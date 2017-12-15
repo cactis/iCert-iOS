@@ -54,8 +54,21 @@ class Paper: BaseMappable {
   }
 }
 
+
+class Photo: BaseMappable {
+
+  var url: String?
+  override func mapping(map: Map) {
+    url <- map["file_url"]
+  }
+
+}
+
+
 class Cert: BaseMappable {
   var title: String?
+  var photo: Photo?
+  var photos: [Photo]?
   var expiredDate: Date?
   var expiredInfo: String?
   override func mapping(map: Map) {
@@ -63,6 +76,8 @@ class Cert: BaseMappable {
     title <- map["title"]
     expiredDate <- (map["expired_date"], DateTransform())
     expiredInfo <- map["expired_info"]
+    photo <- map["photo"]
+    photos <- map["photos"]
   }
 }
 

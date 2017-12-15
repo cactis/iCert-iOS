@@ -7,7 +7,7 @@ target 'icert' do
 
   # pod 'Fabric'#, '~> 1.6.3'
   # pod 'Crashlytics'#, '3.7.2'
-
+  pod 'EFQRCode'
   pod 'NSDate+TimeAgo'
   pod 'SwiftyUserDefaults'#, '2.2.0'
   pod 'ReSwift'#, '2.0.0'

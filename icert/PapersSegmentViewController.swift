@@ -20,7 +20,12 @@ class ApplicationSegmentViewController: SegmentViewController {
   override func styleUI() {
     super.styleUI()
     segmentHeight = 50
+//    tableViews.first?.bordered()
   }
+
+//  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//    return 100
+//  }
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
@@ -89,8 +94,7 @@ class PapersSegmentViewController: ApplicationSegmentViewController {
   }
 
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    //    let index = tableViews.index(of: tableView)!
-    return 150 //[100, 100, 160][index]
+    return [cell.bottomView.bottomEdge(), 100].max()!
   }
 
   override func removeDataFromCollectionData(tableView: UITableView, indexPath: IndexPath) { collectionDatas[tableViews.index(of: tableView)!].remove(at: indexPath.row) }
@@ -104,7 +108,7 @@ class PaperClosedCell: PaperCell {
   var date = UILabel()
   override var data: Paper! { didSet {
     date.texted("已於 \((data.receiveAt?.toString())!) 領取")
-//    layoutSubviews()
+    //    layoutSubviews()
     }}
   override func layoutUI() {
     super.layoutUI()
@@ -148,8 +152,8 @@ class PaperCell: BodyFooterCell {
 }
 
 class BodyFooterCell: BaseCell {
-  var footer = DefaultView()
-  var toolbar = Toolbar()
+//  var footer = DefaultView()
+//  var toolbar = Toolbar()
   override func layoutUI() {
     super.layoutUI()
     layout([footer.layout([toolbar])])
@@ -162,21 +166,27 @@ class BodyFooterCell: BaseCell {
   override func layoutSubviews() {
     super.layoutSubviews()
     body.anchorAndFillEdge(.top, xPad: 0, yPad: 0, otherSize: (body.bottomView?.bottomEdge())! + 20)
-    footer.alignUnder(body, centeredFillingWidthWithLeftAndRightPadding: 0, topPadding: 20, height: 60)
-    footer.topBordered()
-    toolbar.bottomBordered(UIColor.lightGray.lighter(0.1), width: 1, padding: 0)
-    toolbar.layoutSubviews()
-    footer.bottomBordered()
-    footer.shadowed(UIColor.lightGray, offset: CGSize(width: 2, height: 15))
   }
 }
 
 class Toolbar: DefaultView {
   var priButton = UIButton()
   var subButton = UIButton()
+  var extraButtons = UIView()
+  var buttons = [UIButton]() { didSet {
+    extraButtons.removeSubviews()
+    extraButtons.layout(buttons)
+    layoutSubviews()
+    buttons.forEach({$0.styledAsSubButton()})
+    }}
+
+  func addExtraButtons(buttons: [UIButton], bindEvent: (_ buttons: [UIButton]) -> ()) {
+    self.buttons = buttons
+    bindEvent(self.buttons)
+  }
   override func layoutUI() {
     super.layoutUI()
-    layout([priButton, subButton])
+    layout([priButton, subButton, extraButtons])
   }
   override func styleUI() {
     super.styleUI()
@@ -188,6 +198,14 @@ class Toolbar: DefaultView {
     super.layoutSubviews()
     priButton.anchorAndFillEdge(.right, xPad: 10, yPad: 10, otherSize: priButton.textWidth() * 2)
     subButton.align(toTheLeftOf: priButton, matchingTopWithRightPadding: [priButton.width, 10].min()!, width: subButton.textWidth() * 2, height: priButton.height)
-    fillSuperview(left: 0, right: 0, top: 0, bottom: 10)
+    extraButtons.align(toTheLeftOf: subButton, matchingTopAndFillingWidthWithLeftAndRightPadding: 10, height: subButton.height)
+    buttons.forEach { (button) in
+      if buttons.index(of: button)! == 0 {
+        button.anchorAndFillEdge(.right, xPad: 0, yPad: 0, otherSize: button.autoWidth())
+      } else {
+        button.align(toTheLeftOf: buttons[0], matchingTopWithRightPadding: 10, width: button.autoWidth(), height: subButton.height)
+      }
+    }
+//    fillSuperview(left: 0, right: 0, top: 0, bottom: 10)
   }
 }

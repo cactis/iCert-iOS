@@ -8,6 +8,7 @@
 
 import SwiftEasyKit
 import ObjectMapper
+import EFQRCode
 
 class CartsSegmentViewController: ApplicationSegmentViewController {
   let titles = ["尚未結業", "審核中", "已核發"]
@@ -16,7 +17,7 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     _autoRun {
-      self.segment.tappedAtIndex(1)
+      self.segment.tappedAtIndex(2)
     }
   }
 
@@ -25,6 +26,7 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
     tableViews.append(tableView(CertCell.self, identifier: CellIdentifier))
     tableViews.append(tableView(UnconfirmedCell.self, identifier: CellIdentifier))
     tableViews.append(tableView(ConfirmedCell.self, identifier: CellIdentifier))
+//    tableViews.forEach({$0.separatorStyle = .singleLine})
     loadData()
     super.layoutUI()
   }
@@ -75,8 +77,7 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
   }
 
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    let index = tableViews.index(of: tableView)!
-    return [100, 100, 160][index]
+    return [80, 100, 160][tableViews.index(of: tableView)!]
   }
 
   override func removeDataFromCollectionData(tableView: UITableView, indexPath: IndexPath) { collectionDatas[tableViews.index(of: tableView)!].remove(at: indexPath.row) }
@@ -88,32 +89,61 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
 }
 
 class ConfirmedCell: CertBaseCell {
-  var footer = DefaultView()
-  var toolbar = Toolbar()
+  var photo = UIImageView()
+
+//  var testButton = UIButton(text: "產生條碼")
+
+  override var data: Cert! { didSet {
+    photo.imaged(data.photo?.url)
+    }}
+
   override func layoutUI() {
     super.layoutUI()
-    layout([footer.layout([toolbar])])
+    body.layout([photo])
+    let buttons = [UIButton(text: "產生限時條碼"), UIButton(text: "顯示證書")]
+    toolbar.addExtraButtons(buttons: buttons) { buttons in
+      buttons[0].whenTapped {
+        API.get("/certs/\(self.data.id!)/qrcode", run: { (response) in
+          if let token = (response.result.value as! [String: String])["token"] {
+            let url = "\(K.Api.host)/certs/\(self.data.id!)/papers/new?token=\(token)"
+            _logForUIMode(url, title: "url")
+            let image = UIImage(cgImage: EFQRCode.generate(content: url, watermark: self.photo.image?.cgImage)!)
+            openPhotoSlider(images: [image])
+          }
+        })
+      }
+      buttons[1].whenTapped {
+        self.photo.previewTapped()
+      }
+    }
   }
+
   override func styleUI() {
     super.styleUI()
     toolbar.priButton.texted("申請正本")
     status.isHidden = true
+    photo.styled().radiused()
   }
   override func bindUI() {
     super.bindUI()
     toolbar.priButton.whenTapped {
       API.post("/certs/\(self.data.id!)/papers", run: { (response) in
-
       })
     }
+    photo.bindPreview()
   }
   override func layoutSubviews() {
     super.layoutSubviews()
-    footer.alignUnder(body, centeredFillingWidthWithLeftAndRightPadding: 0, topPadding: 20, height: 50)
-    footer.topBordered()
-    toolbar.bottomBordered(UIColor.lightGray.lighter(0.1), width: 1, padding: 0)
+    photo.anchorInCorner(.topRight, xPad: 10, yPad: 10, width: 80, height: 60)
+    title.anchorInCorner(.topLeft, xPad: 10, yPad: title.topEdge(), width: photo.leftEdge() - 20, height: title.textHeight())
+    footer.anchorAndFillEdge(.bottom, xPad: 0, yPad: 0, otherSize: 60)
+    toolbar.fillSuperview(left: 0, right: 0, top: 0, bottom: 10)
+    toolbar.topBordered()
     toolbar.layoutSubviews()
-    footer.shadowed(UIColor.lightGray, offset: CGSize(width: 2, height: 15))
+    body.fillSuperview(left: 0, right: 0, top: 0, bottom: footer.height)
+//    toolbar.bottomBordered()
+    toolbar.shadowed(UIColor.lightGray, offset: CGSize(width: 0, height: 10))
+    toolbar.bottomBordered(UIColor.lightGray.lighter(), width: 1, padding: 1)
   }
 
 
@@ -160,7 +190,7 @@ class CertBaseCell: BaseStatusCell {
   override func layoutSubviews() {
     super.layoutSubviews()
     expiredInfo.alignUnder(title, matchingLeftWithTopPadding: 10, width: expiredInfo.textWidth(), height: expiredInfo.textHeight())
-    body.anchorAndFillEdge(.top, xPad: 0, yPad: 0, otherSize: expiredInfo.bottomEdge())
+    body.anchorAndFillEdge(.top, xPad: 0, yPad: 0, otherSize: expiredInfo.bottomEdge() + 40)
   }
 }
 
@@ -176,17 +206,20 @@ class BaseStatusCell: BaseCell {
   }
   override func layoutSubviews() {
     super.layoutSubviews()
-    status.anchorAndFillEdge(.right, xPad: 10, yPad: 10, otherSize: status.textWidth() * 1.5)
-    title.anchorInCorner(.topLeft, xPad: 10, yPad: 10, width: status.leftEdge() - 20, height: title.textHeight())
+    status.anchorCenterRight(withRightPadding: 10, width: status.textWidth() * 2, height: status.textHeight() * 2)
+    title.anchorInCorner(.topLeft, xPad: 10, yPad: title.topEdge(), width: status.leftEdge() - 20, height: title.textHeight())
   }
 }
 
 class BaseCell: TableViewCell {
   var body = DefaultView()
+  var footer = DefaultView()
+  var toolbar = Toolbar()
   var title = UILabel()
   override func layoutUI() {
     super.layoutUI()
     layout([body.layout([title])])
+    layout([footer.layout([toolbar])])
   }
   override func styleUI() {
     super.styleUI()
@@ -194,8 +227,12 @@ class BaseCell: TableViewCell {
   }
   override func layoutSubviews() {
     super.layoutSubviews()
+    footer.anchorAndFillEdge(.bottom, xPad: 0, yPad: 0, otherSize: 10)
+    body.fillSuperview(left: 0, right: 0, top: 0, bottom: footer.height)
+
     title.anchorAndFillEdge(.top, xPad: 10, yPad: 10, otherSize: title.textHeight())
-    body.anchorAndFillEdge(.top, xPad: 0, yPad: 0, otherSize: bottomView.bottomEdge())
+    toolbar.fillSuperview(left: 0, right: 0, top: 0, bottom: 10)
+    toolbar.bottomBordered()
   }
 }
 
