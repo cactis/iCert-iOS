@@ -100,14 +100,14 @@ class ConfirmedCell: CertBaseCell {
   override func layoutUI() {
     super.layoutUI()
     body.layout([photo])
-    let buttons = [UIButton(text: "產生限時條碼"), UIButton(text: "顯示證書")]
+    let buttons = [UIButton(text: "限時條碼"), UIButton(text: "檢視證書"), UIButton(text: "分享")]
     toolbar.addExtraButtons(buttons: buttons) { buttons in
       buttons[0].whenTapped {
         API.get("/certs/\(self.data.id!)/qrcode", run: { (response) in
           if let token = (response.result.value as! [String: String])["token"] {
-            let url = "\(K.Api.host)/certs/\(self.data.id!)/papers/new?token=\(token)"
-            _logForUIMode(url, title: "url")
-            let image = UIImage(cgImage: EFQRCode.generate(content: url, watermark: self.photo.image?.cgImage)!)
+            let content = "\(K.Api.host)/certs/\(self.data.id!)/papers/new?token=\(token)"
+            _logForUIMode(content, title: "content")
+            let image = UIImage(cgImage: EFQRCode.generate(content: content, watermark: self.photo.image?.cgImage)!)
             openPhotoSlider(images: [image])
           }
         })
@@ -141,7 +141,6 @@ class ConfirmedCell: CertBaseCell {
     toolbar.topBordered()
     toolbar.layoutSubviews()
     body.fillSuperview(left: 0, right: 0, top: 0, bottom: footer.height)
-//    toolbar.bottomBordered()
     toolbar.shadowed(UIColor.lightGray, offset: CGSize(width: 0, height: 10))
     toolbar.bottomBordered(UIColor.lightGray.lighter(), width: 1, padding: 1)
   }

@@ -94,7 +94,7 @@ class PapersSegmentViewController: ApplicationSegmentViewController {
   }
 
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return [cell.bottomView.bottomEdge(), 100].max()!
+    return 120 //[cell.bottomView.bottomEdge() + 30, 140].max()!
   }
 
   override func removeDataFromCollectionData(tableView: UITableView, indexPath: IndexPath) { collectionDatas[tableViews.index(of: tableView)!].remove(at: indexPath.row) }
@@ -166,6 +166,13 @@ class BodyFooterCell: BaseCell {
   override func layoutSubviews() {
     super.layoutSubviews()
     body.anchorAndFillEdge(.top, xPad: 0, yPad: 0, otherSize: (body.bottomView?.bottomEdge())! + 20)
+    footer.anchorAndFillEdge(.bottom, xPad: 0, yPad: 0, otherSize: 60)
+    toolbar.fillSuperview(left: 0, right: 0, top: 0, bottom: 10)
+    toolbar.topBordered()
+    toolbar.layoutSubviews()
+    body.fillSuperview(left: 0, right: 0, top: 0, bottom: footer.height)
+    toolbar.shadowed(UIColor.lightGray, offset: CGSize(width: 0, height: 10))
+    toolbar.bottomBordered(UIColor.lightGray.lighter(), width: 1, padding: 1)
   }
 }
 
@@ -196,14 +203,15 @@ class Toolbar: DefaultView {
   }
   override func layoutSubviews() {
     super.layoutSubviews()
-    priButton.anchorAndFillEdge(.right, xPad: 10, yPad: 10, otherSize: priButton.textWidth() * 2)
+    priButton.anchorAndFillEdge(.right, xPad: 10, yPad: 10, otherSize: priButton.autoWidth())
     subButton.align(toTheLeftOf: priButton, matchingTopWithRightPadding: [priButton.width, 10].min()!, width: subButton.textWidth() * 2, height: priButton.height)
     extraButtons.align(toTheLeftOf: subButton, matchingTopAndFillingWidthWithLeftAndRightPadding: 10, height: subButton.height)
     buttons.forEach { (button) in
-      if buttons.index(of: button)! == 0 {
+      let index = buttons.index(of: button)!
+      if index == 0 {
         button.anchorAndFillEdge(.right, xPad: 0, yPad: 0, otherSize: button.autoWidth())
       } else {
-        button.align(toTheLeftOf: buttons[0], matchingTopWithRightPadding: 10, width: button.autoWidth(), height: subButton.height)
+        button.align(toTheLeftOf: buttons[index - 1], matchingTopWithRightPadding: 10, width: button.autoWidth(), height: subButton.height)
       }
     }
 //    fillSuperview(left: 0, right: 0, top: 0, bottom: 10)
