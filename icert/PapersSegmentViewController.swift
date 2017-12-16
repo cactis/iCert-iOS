@@ -46,7 +46,7 @@ class PapersSegmentViewController: ApplicationSegmentViewController {
   }
 
   override func layoutUI() {
-    segment = TextSegment(titles: titles, size: 12.em)
+    segment = TextSegment(titles: titles)
     tableViews.append(tableView(PaperCell.self, identifier: CellIdentifier))
     tableViews.append(tableView(PaperCell.self, identifier: CellIdentifier))
     tableViews.append(tableView(PaperCell.self, identifier: CellIdentifier))
@@ -94,7 +94,7 @@ class PapersSegmentViewController: ApplicationSegmentViewController {
   }
 
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 120 //[cell.bottomView.bottomEdge() + 30, 140].max()!
+    return screenHeight() / 5 //[cell.bottomView.bottomEdge() + 30, 140].max()!
   }
 
   override func removeDataFromCollectionData(tableView: UITableView, indexPath: IndexPath) { collectionDatas[tableViews.index(of: tableView)!].remove(at: indexPath.row) }

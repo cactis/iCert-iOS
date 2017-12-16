@@ -30,6 +30,8 @@ class Configure {
       }
     }
 
+    K.Size.Text.normal = 14
+
     K.Api.pushserverSubscribe = "/subscribe"
 
     K.Color.table = UIColor.white

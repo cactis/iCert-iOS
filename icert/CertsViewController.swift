@@ -22,7 +22,7 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
   }
 
   override func layoutUI() {
-    segment = TextSegment(titles: titles, size: 12.em)
+    segment = TextSegment(titles: titles)
     tableViews.append(tableView(CertCell.self, identifier: CellIdentifier))
     tableViews.append(tableView(UnconfirmedCell.self, identifier: CellIdentifier))
     tableViews.append(tableView(ConfirmedCell.self, identifier: CellIdentifier))
@@ -77,7 +77,8 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
   }
 
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return [80, 100, 160][tableViews.index(of: tableView)!]
+    return screenHeight() / 5
+//    return [80, 100, 160][tableViews.index(of: tableView)!]
   }
 
   override func removeDataFromCollectionData(tableView: UITableView, indexPath: IndexPath) { collectionDatas[tableViews.index(of: tableView)!].remove(at: indexPath.row) }
@@ -108,7 +109,7 @@ class ConfirmedCell: CertBaseCell {
             let content = "\(K.Api.host)/certs/\(self.data.id!)/papers/new?token=\(token)"
             _logForUIMode(content, title: "content")
             let image = UIImage(cgImage: EFQRCode.generate(content: content, watermark: self.photo.image?.cgImage)!)
-            openPhotoSlider(images: [image])
+            openPhotoSlider(images: [image], info: "<b>www.icert.pccu.edu.tw</b><br/>Issued by: GlobalSign Extended Validation CA-SHA256-G3<br/>Expires: Sunday, 23 June 2019 at 2:56:03 PM Taipei Standard Time<br/>This certificate is valid")
           }
         })
       }
