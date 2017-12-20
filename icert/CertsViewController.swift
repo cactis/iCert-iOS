@@ -17,7 +17,7 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     _autoRun {
-//      self.segment.tappedAtIndex(2)
+      self.segment.tappedAtIndex(2)
     }
   }
 
@@ -97,15 +97,17 @@ class ConfirmedCell: CertBaseCell {
   override func layoutUI() {
     super.layoutUI()
     body.layout([photo])
-    let buttons = [UIButton(text: "限時條碼"), UIButton(text: "檢視證書"), UIButton(text: "分享")]
+    let buttons = [UIButton(text: "條碼列印"), UIButton(text: "檢視證書"), UIButton(text: "分享")]
     toolbar.addExtraButtons(buttons: buttons) { buttons in
       buttons[0].whenTapped {
         API.get("/certs/\(self.data.id!)/qrcode", run: { (response) in
-          if let token = (response.result.value as! [String: String])["token"] {
-            let content = "\(K.Api.host)/certs/\(self.data.id!)/papers/new?token=\(token)"
+          if let cert = Cert(JSON: (response.result.value as? [String: AnyObject])!) {
+            self.data = cert
+            let content = cert.requestCodeURL!.hostUrl()
+            let info = "<b>www.icert.pccu.edu.tw</b><br/>Issued by: GlobalSign Extended Validation CA-SHA256-G3<br/>Expires: Sunday, 23 June 2019 at 2:56:03 PM Taipei Standard Time<br/>This certificate is valid"
+            content.displayQrcode(self.photo.image, info: info)
             _logForUIMode(content, title: "content")
-            let image = UIImage(cgImage: EFQRCode.generate(content: content, watermark: self.photo.image?.cgImage)!)
-            openPhotoSlider(images: [image], info: "<b>www.icert.pccu.edu.tw</b><br/>Issued by: GlobalSign Extended Validation CA-SHA256-G3<br/>Expires: Sunday, 23 June 2019 at 2:56:03 PM Taipei Standard Time<br/>This certificate is valid")
+
           }
         })
       }
@@ -145,6 +147,13 @@ class ConfirmedCell: CertBaseCell {
 
 }
 
+extension String {
+  func displayQrcode(_ image: UIImage?, info: String?) {
+    let photo = UIImage(cgImage: EFQRCode.generate(content: self, watermark: image?.cgImage)!)
+    openPhotoSlider(images: [photo], info: info)
+  }
+}
+
 class UnconfirmedCell: CertCell {
 
   override func bindUI() {
@@ -170,7 +179,8 @@ class CertCell: CertBaseCell {
         let course = Course(JSON: response.result.value as! [String: AnyObject])!
         self.data = course.certs?.first
         self.data.course = course
-        if course.percentage == 100 { delayedJob { self.didDataUpdated(self.data) } }
+        if course.percentage == 100 { delayedJob { self.didDataUpdated(self.data) }
+        }
       }
     }
   }
@@ -241,15 +251,11 @@ class BaseCell: TableViewCell {
   }
 }
 
-
-
 extension UILabel {
   @discardableResult func asTitle() -> UILabel {
     return styled().larger().bold()
   }
 }
-
-
 
 class CertsViewController: ApplicationTableViewController {
 

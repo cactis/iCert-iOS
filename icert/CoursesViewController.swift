@@ -91,13 +91,13 @@ class CoursesViewController: ApplicationTableViewController {
     }
     override func bindUI() {
       super.bindUI()
-      percentage.whenTapped(self, action: #selector(percentageTapped))
+//      percentage.whenTapped(self, action: #selector(percentageTapped))
     }
-    @objc func percentageTapped() {
-      API.put("/courses/\(data.id!)/go") { (response) in
-        self.data = Course(JSON: response.result.value as! [String: AnyObject])!
-      }
-    }
+//    @objc func percentageTapped() {
+//      API.put("/courses/\(data.id!)/go") { (response) in
+//        self.data = Course(JSON: response.result.value as! [String: AnyObject])!
+//      }
+//    }
     override func layoutSubviews() {
       super.layoutSubviews()
       cert.anchorInCorner(.topRight, xPad: 10, yPad: 20, width: cert.textWidth() / 2, height: cert.getHeightBySizeThatFitsWithWidth(cert.width))

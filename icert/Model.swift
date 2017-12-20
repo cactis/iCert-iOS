@@ -49,10 +49,14 @@ class Course: BaseMappable {
 class Paper: BaseMappable {
   var title: String?
   var receiveAt: Date?
+  var requestByCode: Bool?
+  var paidCodeURL: String?
   override func mapping(map: Map) {
     super.mapping(map: map)
     title <- map["cert.title"]
     receiveAt <- (map["receive_at"], DateTransform())
+    requestByCode <- map["request_by_code"]
+    paidCodeURL <- map["paid_code_url"]
   }
 }
 
@@ -74,6 +78,7 @@ class Cert: BaseMappable {
   var photos: [Photo]?
   var expiredDate: Date?
   var expiredInfo: String?
+  var requestCodeURL: String?
   override func mapping(map: Map) {
     super.mapping(map: map)
     course <- map["course"]
@@ -82,6 +87,7 @@ class Cert: BaseMappable {
     expiredInfo <- map["expired_info"]
     photo <- map["photo"]
     photos <- map["photos"]
+    requestCodeURL <- map["request_code_url"]
   }
 }
 

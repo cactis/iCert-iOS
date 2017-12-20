@@ -40,7 +40,7 @@ class PapersSegmentViewController: ApplicationSegmentViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     _autoRun {
-      self.segment.tappedAtIndex(5)
+//      self.segment.tappedAtIndex(5)
     }
 
   }
@@ -48,7 +48,7 @@ class PapersSegmentViewController: ApplicationSegmentViewController {
   override func layoutUI() {
     segment = TextSegment(titles: titles)
     tableViews.append(tableView(PaperCell.self, identifier: CellIdentifier))
-    tableViews.append(tableView(PaperCell.self, identifier: CellIdentifier))
+    tableViews.append(tableView(PaperPrintableCell.self, identifier: CellIdentifier))
     tableViews.append(tableView(PaperCell.self, identifier: CellIdentifier))
     tableViews.append(tableView(PaperCell.self, identifier: CellIdentifier))
     tableViews.append(tableView(PaperCell.self, identifier: CellIdentifier))
@@ -75,6 +75,9 @@ class PapersSegmentViewController: ApplicationSegmentViewController {
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let index = tableViews.index(of: tableView)!
     switch index {
+    case 1:
+      cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) as! PaperPrintableCell
+      (cell as! PaperPrintableCell).data = collectionDatas[index][indexPath.row]
     case 5:
       cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier) as! PaperClosedCell
       (cell as! PaperClosedCell).data = collectionDatas[index][indexPath.row]
@@ -124,6 +127,16 @@ class PaperClosedCell: PaperCell {
   }
 }
 
+class PaperPrintableCell: PaperCell {
+  override func bindUI() {
+    super.bindUI()
+    toolbar.priButton.whenTapped {
+      let url = self.data.paidCodeURL
+      url?.hostUrl().displayQrcode(nil, info: nil)
+    }
+  }
+}
+
 class PaperCell: BodyFooterCell {
   var data: Paper! {
     didSet {
@@ -137,8 +150,8 @@ class PaperCell: BodyFooterCell {
   override func bindUI() {
     super.bindUI()
     [toolbar.priButton, toolbar.subButton].forEach { $0.whenTapped {
-      if let action = self.data.nextEvent {
-        API.post("/papers/\(self.data.id!)/\(action)!", run: { (response) in
+      if let nextEvent = self.data.nextEvent {
+        API.post("/papers/\(self.data.id!)/\(nextEvent)!", run: { (response) in
           delayedJob (1) {
             if let paper = Paper(JSON: response.result.value as! [String: AnyObject]) {
               self.didDataUpdated(paper)

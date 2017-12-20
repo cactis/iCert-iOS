@@ -15,7 +15,6 @@ import FontAwesome_swift
 import Fabric
 import Crashlytics
 
-
 @UIApplicationMain
 class AppDelegate: DefaultAppDelegate {
 
@@ -55,15 +54,17 @@ class AppDelegate: DefaultAppDelegate {
       case "confirmed":
         let vc = CartsSegmentViewController()
         vc.enableCloseBarButtonItem()
-        currentViewController.openViewController(vc, completion: {
-          delayedJob(1) { vc.segment.tappedAtIndex(2) }
-        })
+        currentViewController.openViewController(vc, completion: { delayedJob(1) { vc.segment.tappedAtIndex(2) } })
       case "unpaid":
         let vc = PapersSegmentViewController()
         vc.enableCloseBarButtonItem()
         currentViewController.openViewController(vc, completion: {
 //          delayedJob(1) { vc.segment.tappedAtIndex(1) }
         })
+      case "rateable":
+        let vc = PapersSegmentViewController()
+        vc.enableCloseBarButtonItem()
+        currentViewController.openViewController(vc, completion: { delayedJob(1) { vc.segment.tappedAtIndex(4) } })
       case "udollar":
         let vc = UdollarsViewController()
         vc.enableCloseBarButtonItem()
