@@ -24,6 +24,7 @@ class Udollar: BaseMappable {
 }
 
 class Course: BaseMappable {
+  var certs: [Cert]?
   var title: String?
   var hasCert: Bool?
   var startDate: Date?
@@ -34,6 +35,7 @@ class Course: BaseMappable {
 
   override func mapping(map: Map) {
     super.mapping(map: map)
+    certs <- map["certs"]
     title <- map["title"]
     hasCert <- map["has_cert"]
     startDate <- map["begin_date"]
@@ -66,6 +68,7 @@ class Photo: BaseMappable {
 
 
 class Cert: BaseMappable {
+  var course: Course?
   var title: String?
   var photo: Photo?
   var photos: [Photo]?
@@ -73,6 +76,7 @@ class Cert: BaseMappable {
   var expiredInfo: String?
   override func mapping(map: Map) {
     super.mapping(map: map)
+    course <- map["course"]
     title <- map["title"]
     expiredDate <- (map["expired_date"], DateTransform())
     expiredInfo <- map["expired_info"]

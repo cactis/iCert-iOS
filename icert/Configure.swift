@@ -12,7 +12,7 @@ class Configure {
     K.App.mode = "stage"
 //    K.App.mode = "local"
 
-    K.App.name = "圈集"
+    K.App.name = "iCert"
 
     K.Api.production = "http://icert.airfont.com"
     K.Api.stage = K.Api.production
@@ -35,8 +35,13 @@ class Configure {
     K.Api.pushserverSubscribe = "/subscribe"
 
     K.Color.table = UIColor.white
-    K.Color.navigator = UIColor.fromRGB(119, green: 203, blue: 215)
-    K.Color.tabBarBackgroundColor = UIColor.fromHex("FFCC00")
+//    K.Color.navigator = UIColor.fromRGB(119, green: 203, blue: 215)
+    K.Color.navigator = UIColor.fromHex("649C9B").lighter()
+
+    K.Color.tabBarBackgroundColor = UIColor.fromHex("E63D71").darker(0.2)
+//    K.Color.tabBar = UIColor.white
+//    K.Color.tabBarBackgroundColor = UIColor.fromHex("FFCC00")
+
     K.Color.buttonBg = K.Color.tabBarBackgroundColor
     K.CSS.style = "body{font-family: Helvetica,Arial; margin: 1em; font-size: 0.8em; line-height: 1.5; color: \(K.Color.Text.normal.lighter().hexString);} a{color: \(K.Color.buttonBg)}"
 

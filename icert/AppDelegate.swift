@@ -6,13 +6,15 @@
 //  Copyright © 2017 ctslin. All rights reserved.
 //
 
-
 import UIKit
 import SwiftyUserDefaults
 import SwiftEasyKit
 import ReSwift
 import UserNotifications
 import FontAwesome_swift
+import Fabric
+import Crashlytics
+
 
 @UIApplicationMain
 class AppDelegate: DefaultAppDelegate {
@@ -22,6 +24,7 @@ class AppDelegate: DefaultAppDelegate {
     let _ = LocalDevelopment()
     super.application(application, didFinishLaunchingWithOptions: launchOptions)
     boot()
+    Fabric.with([Crashlytics.self])
     return true
   }
 
@@ -83,7 +86,7 @@ class AppDelegate: DefaultAppDelegate {
 
   func icon(_ name: FontAwesome, selected: Bool = false) -> UIImage {
     let size = 30
-    let color = !selected ? UIColor.darkGray.lighter(0.3) : UIColor.black.lighter()
+    let color = selected ? K.Color.tabBar : K.Color.tabBarUnselected
     return getIcon(name, options: ["color": color, "size": size])
   }
 

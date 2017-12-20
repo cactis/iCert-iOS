@@ -17,7 +17,7 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     _autoRun {
-      self.segment.tappedAtIndex(2)
+//      self.segment.tappedAtIndex(2)
     }
   }
 
@@ -67,8 +67,8 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
       if let cert = data as? Cert {
         self.collectionDatas[index][indexPath.row] = cert
         switch index {
-        case 1:
-          self.moveCellTo(currentIndex: index, targetIndex: 2, indexPath: indexPath)
+        case 0, 1:
+          self.moveCellTo(currentIndex: index, targetIndex: index + 1, indexPath: indexPath)
         default: break
         }
       }
@@ -86,14 +86,10 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
   override func insertDataToCollectionData(currentIndex: Int, targetIndex: Int, indexPath: IndexPath) { self.collectionDatas[targetIndex].insert(self.collectionDatas[currentIndex][indexPath.row], at: 0) }
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return collectionDatas.count > 0 ? collectionDatas[tableViews.index(of: tableView)!].count : 0 }
-
 }
 
 class ConfirmedCell: CertBaseCell {
   var photo = UIImageView()
-
-//  var testButton = UIButton(text: "產生條碼")
-
   override var data: Cert! { didSet {
     photo.imaged(data.photo?.url)
     }}
@@ -151,25 +147,34 @@ class ConfirmedCell: CertBaseCell {
 
 class UnconfirmedCell: CertCell {
 
-  override var data: Cert! { didSet {
-    status.texted(data.status)
-    }}
   override func bindUI() {
     super.bindUI()
     status.whenTapped(self, action: #selector(statusTapped))
   }
   @objc func statusTapped() {
-//    alert(self, title: "審核通過", message: "確定發佈本證書？", okHandler: { (action) in
       API.post("/certs/\(self.data.id!)/confirm!", run: { (response) in
         self.data = Cert(JSON: response.result.value as! [String: AnyObject])!
         self.didDataUpdated(self.data)
       })
-//    }) { (action) in
-//
-//    }
   }
 }
-class CertCell: CertBaseCell { }
+class CertCell: CertBaseCell {
+  override var data: Cert! { didSet {
+    status.texted(data.status)
+//    status.html(data.status?.toHtmlWithStyle())
+    }}
+  override func bindUI() {
+    super.bindUI()
+    status.whenTapped {
+      API.put("/courses/\((self.data.course?.id!)!)/go") { (response) in
+        let course = Course(JSON: response.result.value as! [String: AnyObject])!
+        self.data = course.certs?.first
+        self.data.course = course
+        if course.percentage == 100 { delayedJob { self.didDataUpdated(self.data) } }
+      }
+    }
+  }
+}
 
 class CertBaseCell: BaseStatusCell {
 
