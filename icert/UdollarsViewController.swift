@@ -14,7 +14,7 @@ class UdollarsViewController: ApplicationTableViewController {
   var collectionData = [Udollar]() { didSet { tableView.reloadData() } }
 
   override func loadData() {
-    API.get("/udollars") { (response) in
+    API.get("/udollars") { (response, data) in
       self.collectionData = (response.result.value as! [[String: AnyObject]]).map { Udollar(JSON: $0)! }
       self.head.data = self.collectionData.first?.balance ?? 0
     }

@@ -36,12 +36,12 @@ class CoursesViewController: ApplicationTableViewController {
     addLeftBarButtonItem(getIcon(.recycle), action: #selector(resetTapped))
   }
   @objc func resetTapped() {
-    API.post("/courses/reset") { (response) in
+    API.post("/courses/reset") { (response, data) in
       self.viewWillAppear(true)
     }
   }
   @objc func plusTapped() {
-    API.post("/courses") { (response) in
+    API.post("/courses") { (response, data) in
       self.collectionData.insert(Course(JSON: response.result.value as! [String: AnyObject])!, at: 0)
     }
   }
@@ -57,7 +57,7 @@ class CoursesViewController: ApplicationTableViewController {
   }
 
   override func loadData() {
-    API.get("/courses") { (response) in
+    API.get("/courses") { (response, data) in
       self.collectionData = (response.result.value as! [[String: AnyObject]]).map { Course(JSON: $0)! }
     }
   }
@@ -94,7 +94,7 @@ class CoursesViewController: ApplicationTableViewController {
 //      percentage.whenTapped(self, action: #selector(percentageTapped))
     }
 //    @objc func percentageTapped() {
-//      API.put("/courses/\(data.id!)/go") { (response) in
+//      API.put("/courses/\(data.id!)/go") { (response, data) in
 //        self.data = Course(JSON: response.result.value as! [String: AnyObject])!
 //      }
 //    }

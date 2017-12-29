@@ -8,7 +8,7 @@
 
 import ObjectMapper
 
-class Udollar: BaseMappable {
+class Udollar: AppMappable {
   var payment: Int?
   var balance: Int?
   var title: String?
@@ -23,7 +23,7 @@ class Udollar: BaseMappable {
   }
 }
 
-class Course: BaseMappable {
+class Course: AppMappable {
   var certs: [Cert]?
   var title: String?
   var hasCert: Bool?
@@ -46,7 +46,7 @@ class Course: BaseMappable {
   }
 }
 
-class Paper: BaseMappable {
+class Paper: AppMappable {
   var title: String?
   var receiveAt: Date?
   var requestByCode: Bool?
@@ -61,17 +61,19 @@ class Paper: BaseMappable {
 }
 
 
-class Photo: BaseMappable {
+class Photo: AppMappable {
 
   var url: String?
+  var thumb: String?
   override func mapping(map: Map) {
     url <- map["file_url"]
+    thumb <- map["thumb_url"]
   }
 
 }
 
 
-class Cert: BaseMappable {
+class Cert: AppMappable {
   var course: Course?
   var title: String?
   var photo: Photo?
@@ -91,7 +93,7 @@ class Cert: BaseMappable {
   }
 }
 
-class BaseMappable: Mappable {
+class AppMappable: Mappable {
   var id: Int?
   var createdAt: Date?
   var updatedAt: Date?

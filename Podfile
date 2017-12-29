@@ -7,8 +7,12 @@ target 'icert' do
 
    pod 'Fabric'#, '~> 1.6.3'
    pod 'Crashlytics'#, '3.7.2'
-#   pod 'Spring'
-   pod 'Spring', :git => 'https://github.com/MengTo/Spring.git'
+   #   pod 'Spring'
+   #   pod 'Spring', :git => 'https://github.com/MengTo/Spring.git'
+
+  pod 'iCarousel'
+  # https://www.cocoacontrols.com/search?q=cover
+#  pod 'BeastComponents', :git => 'https://github.com/istsest/BeastComponents.git'
 
   pod 'EFQRCode'
   pod 'NSDate+TimeAgo'

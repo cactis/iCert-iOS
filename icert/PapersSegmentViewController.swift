@@ -58,7 +58,7 @@ class PapersSegmentViewController: ApplicationSegmentViewController {
   }
 
   override func loadData() {
-    API.get("/papers") { (response) in
+    API.get("/papers") { (response, data) in
       self.collectionDatas = []
       let values = response.result.value as! [String: AnyObject]
       self.actions.forEach({ (action) in
@@ -151,7 +151,7 @@ class PaperCell: BodyFooterCell {
     super.bindUI()
     [toolbar.priButton, toolbar.subButton].forEach { $0.whenTapped {
       if let nextEvent = self.data.nextEvent {
-        API.post("/papers/\(self.data.id!)/\(nextEvent)!", run: { (response) in
+        API.post("/papers/\(self.data.id!)/\(nextEvent)!", run: { (response, data) in
           delayedJob (1) {
             if let paper = Paper(JSON: response.result.value as! [String: AnyObject]) {
               self.didDataUpdated(paper)

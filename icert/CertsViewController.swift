@@ -11,7 +11,7 @@ import ObjectMapper
 import EFQRCode
 
 class CartsSegmentViewController: ApplicationSegmentViewController {
-  let titles = ["尚未結業", "審核中", "已核發"]
+  let titles = ["修課中", "審核中", "已核發"]
   let actions = ["draft", "unconfirmed", "confirmed"]
   var collectionDatas = [[Cert]]()
   override func viewDidLoad() {
@@ -32,11 +32,11 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
   }
 
   override func loadData() {
-    API.get("/certs") { (response) in
+    API.get("/certs") { (response, data) in
       self.collectionDatas = []
       let values = response.result.value as! [String: AnyObject]
       self.actions.forEach({ (action) in
-        self.collectionDatas.append((values[action] as! [[String: AnyObject]]).map { Cert(JSON: $0)! })
+        self.collectionDatas.append(Mapper<Cert>().mapArray(JSONObject: values[action])!)
       })
       self.tableViews.forEach({
         let index = self.tableViews.index(of: $0)!
@@ -84,7 +84,7 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
   override func removeDataFromCollectionData(tableView: UITableView, indexPath: IndexPath) { collectionDatas[tableViews.index(of: tableView)!].remove(at: indexPath.row) }
 
   override func insertDataToCollectionData(currentIndex: Int, targetIndex: Int, indexPath: IndexPath) { self.collectionDatas[targetIndex].insert(self.collectionDatas[currentIndex][indexPath.row], at: 0) }
-  
+
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { return collectionDatas.count > 0 ? collectionDatas[tableViews.index(of: tableView)!].count : 0 }
 }
 
@@ -100,7 +100,7 @@ class ConfirmedCell: CertBaseCell {
     let buttons = [UIButton(text: "條碼列印"), UIButton(text: "檢視證書"), UIButton(text: "分享")]
     toolbar.addExtraButtons(buttons: buttons) { buttons in
       buttons[0].whenTapped {
-        API.get("/certs/\(self.data.id!)/qrcode", run: { (response) in
+        API.get("/certs/\(self.data.id!)/qrcode", run: { (response, data) in
           if let cert = Cert(JSON: (response.result.value as? [String: AnyObject])!) {
             self.data = cert
             let content = cert.requestCodeURL!.hostUrl()
@@ -126,7 +126,7 @@ class ConfirmedCell: CertBaseCell {
   override func bindUI() {
     super.bindUI()
     toolbar.priButton.whenTapped {
-      API.post("/certs/\(self.data.id!)/papers", run: { (response) in
+      API.post("/certs/\(self.data.id!)/papers", run: { (response, data) in
       })
     }
     photo.bindPreview()
@@ -161,7 +161,7 @@ class UnconfirmedCell: CertCell {
     status.whenTapped(self, action: #selector(statusTapped))
   }
   @objc func statusTapped() {
-      API.post("/certs/\(self.data.id!)/confirm!", run: { (response) in
+      API.post("/certs/\(self.data.id!)/confirm!", run: { (response, data) in
         self.data = Cert(JSON: response.result.value as! [String: AnyObject])!
         self.didDataUpdated(self.data)
       })
@@ -175,7 +175,7 @@ class CertCell: CertBaseCell {
   override func bindUI() {
     super.bindUI()
     status.whenTapped {
-      API.put("/courses/\((self.data.course?.id!)!)/go") { (response) in
+      API.put("/courses/\((self.data.course?.id!)!)/go") { (response, data) in
         let course = Course(JSON: response.result.value as! [String: AnyObject])!
         self.data = course.certs?.first
         self.data.course = course
@@ -279,7 +279,7 @@ class CertsViewController: ApplicationTableViewController {
   }
 
   override func loadData() {
-    API.get("/certs") { (response) in
+    API.get("/certs") { (response, data) in
       self.collectionData = (response.result.value as! [[String: AnyObject]]).map { Cert(JSON: $0)! }
       _logForUIMode(self.collectionData, title: "collectionData")
     }

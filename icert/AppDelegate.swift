@@ -28,15 +28,16 @@ class AppDelegate: DefaultAppDelegate {
   }
 
   func boot() {
-    let icons: [FontAwesome] = [.calendar, .idCardO, .print, .dollar]
-    let images = [icon(icons[0]), icon(icons[1]), icon(icons[2]), icon(icons[3])]
-    let selectedImages = [icon(icons[0], selected: true), icon(icons[1], selected: true), icon(icons[2], selected: true), icon(icons[3], selected: true)]
-    (window, tabBarViewController) = SwiftEasyKit.enableTabBarController(self, viewControllers:
-      [CoursesViewController(),
+    let icons: [FontAwesome] = [.creditCard, .calendar, .idCardO, .print, .dollar]
+    let images = icons.map({icon($0)})
+    let selectedImages = icons.map({icon($0, selected: true)})
+    (window, tabBarViewController) = enableTabBarController(self, viewControllers:
+      [HomeViewController(),
+       CoursesViewController(),
        CartsSegmentViewController(), //CertsViewController(),
         PapersSegmentViewController(),
         UdollarsViewController()], titles:
-      ["修課清單", "我的證書", "申請追蹤", "UDollar"], images: images, selectedImages: selectedImages
+      ["首頁", "修課中", "我的證書", "申請追蹤", "udallor"], images: images, selectedImages: selectedImages
     )
     window?.backgroundColor = UIColor.darkGray.lighter()
     window?.layer.contents = UIImage(named: "background")?.cgImage
@@ -85,11 +86,11 @@ class AppDelegate: DefaultAppDelegate {
 
   }
 
-  func icon(_ name: FontAwesome, selected: Bool = false) -> UIImage {
-    let size = 30
-    let color = selected ? K.Color.tabBar : K.Color.tabBarUnselected
-    return getIcon(name, options: ["color": color, "size": size])
-  }
+//  func icon(_ name: FontAwesome, selected: Bool = false) -> UIImage {
+//    let size = 30
+//    let color = selected ? K.Color.tabBar : K.Color.tabBarUnselected
+//    return getIcon(name, options: ["color": color, "size": size])
+//  }
 
 
 }

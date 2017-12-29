@@ -17,6 +17,7 @@
 		3729D4D01FDEC36B00F79A43 /* Configure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D4CF1FDEC36B00F79A43 /* Configure.swift */; };
 		3729D4D21FDECB0C00F79A43 /* LocalDevelopment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D4D11FDECB0C00F79A43 /* LocalDevelopment.swift */; };
 		3729D4D41FDF784F00F79A43 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D4D31FDF784F00F79A43 /* Model.swift */; };
+		376BF7B11FF27402005BC921 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376BF7B01FF27402005BC921 /* HomeViewController.swift */; };
 		37B0742B1FDF98D400800720 /* UdollarsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B0742A1FDF98D400800720 /* UdollarsViewController.swift */; };
 		37B0742D1FDFCE1900800720 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37B0742C1FDFCE1900800720 /* Launch Screen.storyboard */; };
 		37F5BADC1FE15B5E0050864D /* PapersSegmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F5BADB1FE15B5E0050864D /* PapersSegmentViewController.swift */; };
@@ -61,6 +62,7 @@
 		3729D4CF1FDEC36B00F79A43 /* Configure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configure.swift; sourceTree = "<group>"; };
 		3729D4D11FDECB0C00F79A43 /* LocalDevelopment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDevelopment.swift; sourceTree = "<group>"; };
 		3729D4D31FDF784F00F79A43 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		376BF7B01FF27402005BC921 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		37B0742A1FDF98D400800720 /* UdollarsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UdollarsViewController.swift; sourceTree = "<group>"; };
 		37B0742C1FDFCE1900800720 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		37B0742E1FDFF87000800720 /* icert.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = icert.entitlements; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 		3729D4981FDEB80400F79A43 /* icert */ = {
 			isa = PBXGroup;
 			children = (
+				376BF7B01FF27402005BC921 /* HomeViewController.swift */,
 				37B0742E1FDFF87000800720 /* icert.entitlements */,
 				3729D4991FDEB80400F79A43 /* AppDelegate.swift */,
 				37F5BADB1FE15B5E0050864D /* PapersSegmentViewController.swift */,
@@ -386,9 +389,12 @@
 				"${BUILT_PRODUCTS_DIR}/Bond/Bond.framework",
 				"${BUILT_PRODUCTS_DIR}/Differ/Differ.framework",
 				"${BUILT_PRODUCTS_DIR}/EFQRCode/EFQRCode.framework",
+				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/Facade/Facade.framework",
 				"${BUILT_PRODUCTS_DIR}/Fakery/Fakery.framework",
 				"${BUILT_PRODUCTS_DIR}/FontAwesome.swift/FontAwesome_swift.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/ImageRow/ImageRow.framework",
 				"${BUILT_PRODUCTS_DIR}/JSQMessagesViewController/JSQMessagesViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
@@ -402,13 +408,13 @@
 				"${BUILT_PRODUCTS_DIR}/RSKImageCropper/RSKImageCropper.framework",
 				"${BUILT_PRODUCTS_DIR}/ReSwift/ReSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/ReactiveKit/ReactiveKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Spring/Spring.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftEasyKit/SwiftEasyKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftRandom/SwiftRandom.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftWebSocket/SwiftWebSocket.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyUserDefaults/SwiftyUserDefaults.framework",
 				"${BUILT_PRODUCTS_DIR}/UITextView+Placeholder/UITextView_Placeholder.framework",
+				"${BUILT_PRODUCTS_DIR}/iCarousel/iCarousel.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -416,9 +422,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bond.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differ.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EFQRCode.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Facade.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Fakery.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FontAwesome_swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImageRow.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQMessagesViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQSystemSoundPlayer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
@@ -432,13 +441,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RSKImageCropper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactiveKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Spring.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftEasyKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftRandom.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftWebSocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyUserDefaults.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UITextView_Placeholder.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/iCarousel.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -553,6 +562,7 @@
 				3729D49C1FDEB80400F79A43 /* ViewController.swift in Sources */,
 				3729D4D41FDF784F00F79A43 /* Model.swift in Sources */,
 				3729D49A1FDEB80400F79A43 /* AppDelegate.swift in Sources */,
+				376BF7B11FF27402005BC921 /* HomeViewController.swift in Sources */,
 				37B0742B1FDF98D400800720 /* UdollarsViewController.swift in Sources */,
 				3729D4D21FDECB0C00F79A43 /* LocalDevelopment.swift in Sources */,
 				3729D4CA1FDEBFEE00F79A43 /* CoursesViewController.swift in Sources */,
@@ -712,7 +722,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tw.edu.pccu.sce.icert;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e9088421-63b3-4093-ad1a-f5aa48ca32d1";
+				PROVISIONING_PROFILE = "fd3c430c-a13a-4258-b09b-316079ee07af";
 				PROVISIONING_PROFILE_SPECIFIER = "icert-development";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -732,7 +742,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tw.edu.pccu.sce.icert;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e9088421-63b3-4093-ad1a-f5aa48ca32d1";
+				PROVISIONING_PROFILE = "fd3c430c-a13a-4258-b09b-316079ee07af";
 				PROVISIONING_PROFILE_SPECIFIER = "icert-development";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
