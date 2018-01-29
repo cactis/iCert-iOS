@@ -24,8 +24,16 @@ class AppDelegate: DefaultAppDelegate {
     super.application(application, didFinishLaunchingWithOptions: launchOptions)
     boot()
     Fabric.with([Crashlytics.self])
+    self.logUser()
     return true
   }
+
+  func logUser() {
+    Crashlytics.sharedInstance().setUserEmail("user@fabric.io")
+    Crashlytics.sharedInstance().setUserIdentifier("12345")
+    Crashlytics.sharedInstance().setUserName("Test User")
+  }
+
 
   func boot() {
     let icons: [FontAwesome] = [.creditCard, .calendar, .idCardO, .print, .dollar]

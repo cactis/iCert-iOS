@@ -6,6 +6,7 @@
 //  Copyright © 2017 ctslin. All rights reserved.
 //
 
+import SwiftEasyKit
 import ObjectMapper
 
 class Udollar: AppMappable {
@@ -26,11 +27,11 @@ class Udollar: AppMappable {
 class Course: AppMappable {
   var certs: [Cert]?
   var title: String?
-  var hasCert: Bool?
+  var hasCert: Bool? = true
   var startDate: Date?
   var endDate: Date?
-  var hours: Int?
-  var percentage: Int?
+  var hours: Int? = 200
+  var percentage: Int? = 0
   var percentageDesc: String?
 
   override func mapping(map: Map) {
@@ -43,6 +44,8 @@ class Course: AppMappable {
     hours <- map["hours"]
     percentage <- map["percentage"]
     percentageDesc <- map["percentage_desc"]
+    
+    title <- map["clas_name"]
   }
 }
 
@@ -60,7 +63,6 @@ class Paper: AppMappable {
   }
 }
 
-
 class Photo: AppMappable {
 
   var url: String?
@@ -69,9 +71,7 @@ class Photo: AppMappable {
     url <- map["file_url"]
     thumb <- map["thumb_url"]
   }
-
 }
-
 
 class Cert: AppMappable {
   var course: Course?
@@ -81,6 +81,8 @@ class Cert: AppMappable {
   var expiredDate: Date?
   var expiredInfo: String?
   var requestCodeURL: String?
+  var info: String?
+
   override func mapping(map: Map) {
     super.mapping(map: map)
     course <- map["course"]
@@ -90,47 +92,8 @@ class Cert: AppMappable {
     photo <- map["photo"]
     photos <- map["photos"]
     requestCodeURL <- map["request_code_url"]
+    info <- map["info"]
   }
 }
 
-class AppMappable: Mappable {
-  var id: Int?
-  var createdAt: Date?
-  var updatedAt: Date?
-  var state: String?
-  var status: String?
-  var alert: String?
-  var priButton: String?
-  var subButton: String?
-  var nextEvent: String?
-  func mapping(map: Map) {
-    id <- map["id"]
-    state <- map["state"]
-    status <- map["status"]
-    createdAt <- (map["created_at"], DateTransform())
-    updatedAt <- (map["updated_at"], DateTransform())
-    alert <- map["alert"]
-    priButton <- map["pri_button"]
-    subButton <- map["sub_button"]
-    nextEvent <- map["next_event"]
-  }
 
-  required init?(map: Map) {}
-}
-
-class DateTransform: TransformType {
-
-  public typealias Object = Date
-  public typealias JSON = String
-
-  public init() {}
-
-  func transformFromJSON(_ value: Any?) -> Date? {
-    if value == nil { return nil }
-    return (value as? String)!.toDate()
-  }
-
-  func transformToJSON(_ value: Date?) -> String? {
-    return value?.toString()
-  }
-}

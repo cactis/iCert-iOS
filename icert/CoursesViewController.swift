@@ -32,8 +32,8 @@ class CoursesViewController: ApplicationTableViewController {
     super.layoutUI()
     tableView = tableView(CourseCell.self, identifier: CellIdentifier)
     view.layout([tableView])
-    addRightBarButtonItem(getIcon(.plus), action: #selector(plusTapped))
-    addLeftBarButtonItem(getIcon(.recycle), action: #selector(resetTapped))
+//    addRightBarButtonItem(getIcon(.plus), action: #selector(plusTapped))
+//    addLeftBarButtonItem(getIcon(.recycle), action: #selector(resetTapped))
   }
   @objc func resetTapped() {
     API.post("/courses/reset") { (response, data) in
@@ -100,9 +100,9 @@ class CoursesViewController: ApplicationTableViewController {
 //    }
     override func layoutSubviews() {
       super.layoutSubviews()
-      cert.anchorInCorner(.topRight, xPad: 10, yPad: 20, width: cert.textWidth() / 2, height: cert.getHeightBySizeThatFitsWithWidth(cert.width))
+      cert.anchorInCorner(.topRight, xPad: 10, yPad: 20, width: cert.textWidth() / 2, height: cert.getHeightByWidth(cert.width))
       let w = cert.leftEdge() - 10
-      title.anchorInCorner(.topLeft, xPad: 10, yPad: 10, width: w, height: title.getHeightBySizeThatFitsWithWidth(w))
+      title.anchorInCorner(.topLeft, xPad: 10, yPad: 10, width: w, height: title.getHeightByWidth(w))
       hasCert.alignUnder(cert, matchingCenterWithTopPadding: -5, width: cert.width, height: cert.width)
       hours.alignUnder(title, matchingLeftWithTopPadding: 10, width: 90, height: hours.textHeight())
       percentage.align(toTheRightOf: hours, matchingTopWithLeftPadding: 10, width: 200, height: percentage.textHeight())

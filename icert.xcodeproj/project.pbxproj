@@ -13,7 +13,7 @@
 		3729D4AF1FDEB80400F79A43 /* icertTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D4AE1FDEB80400F79A43 /* icertTests.swift */; };
 		3729D4BA1FDEB80400F79A43 /* icertUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D4B91FDEB80400F79A43 /* icertUITests.swift */; };
 		3729D4CA1FDEBFEE00F79A43 /* CoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D4C91FDEBFEE00F79A43 /* CoursesViewController.swift */; };
-		3729D4CC1FDEC05200F79A43 /* CertsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D4CB1FDEC05200F79A43 /* CertsViewController.swift */; };
+		3729D4CC1FDEC05200F79A43 /* CartsSegmentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D4CB1FDEC05200F79A43 /* CartsSegmentViewController.swift */; };
 		3729D4D01FDEC36B00F79A43 /* Configure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D4CF1FDEC36B00F79A43 /* Configure.swift */; };
 		3729D4D21FDECB0C00F79A43 /* LocalDevelopment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D4D11FDECB0C00F79A43 /* LocalDevelopment.swift */; };
 		3729D4D41FDF784F00F79A43 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3729D4D31FDF784F00F79A43 /* Model.swift */; };
@@ -58,7 +58,7 @@
 		3729D4B91FDEB80400F79A43 /* icertUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = icertUITests.swift; sourceTree = "<group>"; };
 		3729D4BB1FDEB80400F79A43 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3729D4C91FDEBFEE00F79A43 /* CoursesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursesViewController.swift; sourceTree = "<group>"; };
-		3729D4CB1FDEC05200F79A43 /* CertsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertsViewController.swift; sourceTree = "<group>"; };
+		3729D4CB1FDEC05200F79A43 /* CartsSegmentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartsSegmentViewController.swift; sourceTree = "<group>"; };
 		3729D4CF1FDEC36B00F79A43 /* Configure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configure.swift; sourceTree = "<group>"; };
 		3729D4D11FDECB0C00F79A43 /* LocalDevelopment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDevelopment.swift; sourceTree = "<group>"; };
 		3729D4D31FDF784F00F79A43 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
@@ -134,7 +134,7 @@
 				3729D4991FDEB80400F79A43 /* AppDelegate.swift */,
 				37F5BADB1FE15B5E0050864D /* PapersSegmentViewController.swift */,
 				3729D4D11FDECB0C00F79A43 /* LocalDevelopment.swift */,
-				3729D4CB1FDEC05200F79A43 /* CertsViewController.swift */,
+				3729D4CB1FDEC05200F79A43 /* CartsSegmentViewController.swift */,
 				3729D49B1FDEB80400F79A43 /* ViewController.swift */,
 				3729D4C91FDEBFEE00F79A43 /* CoursesViewController.swift */,
 				3729D4A01FDEB80400F79A43 /* Assets.xcassets */,
@@ -266,7 +266,7 @@
 				TargetAttributes = {
 					3729D4951FDEB80400F79A43 = {
 						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -386,7 +386,9 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-icert/Pods-icert-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AssistantKit/AssistantKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Bond/Bond.framework",
+				"${BUILT_PRODUCTS_DIR}/DateToolsSwift/DateToolsSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Differ/Differ.framework",
 				"${BUILT_PRODUCTS_DIR}/EFQRCode/EFQRCode.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
@@ -419,7 +421,9 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AssistantKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bond.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DateToolsSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differ.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EFQRCode.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
@@ -557,7 +561,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3729D4CC1FDEC05200F79A43 /* CertsViewController.swift in Sources */,
+				3729D4CC1FDEC05200F79A43 /* CartsSegmentViewController.swift in Sources */,
 				37F5BADC1FE15B5E0050864D /* PapersSegmentViewController.swift in Sources */,
 				3729D49C1FDEB80400F79A43 /* ViewController.swift in Sources */,
 				3729D4D41FDF784F00F79A43 /* Model.swift in Sources */,
@@ -715,15 +719,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = icert/icert.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BML6K5Z9LJ;
 				INFOPLIST_FILE = icert/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tw.edu.pccu.sce.icert;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fd3c430c-a13a-4258-b09b-316079ee07af";
-				PROVISIONING_PROFILE_SPECIFIER = "icert-development";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -735,15 +740,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = icert/icert.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BML6K5Z9LJ;
 				INFOPLIST_FILE = icert/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = tw.edu.pccu.sce.icert;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "fd3c430c-a13a-4258-b09b-316079ee07af";
-				PROVISIONING_PROFILE_SPECIFIER = "icert-development";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

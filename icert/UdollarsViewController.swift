@@ -104,7 +104,7 @@ class UdollarsViewController: ApplicationTableViewController {
     override func layoutSubviews() {
       super.layoutSubviews()
       title.anchorInCorner(.topLeft, xPad: 10, yPad: 20, width: width() - 80, height: title.textHeight())
-      message.alignUnder(title, matchingLeftAndRightWithTopPadding: 5, height: message.getHeightBySizeThatFitsWithWidth(title.width))
+      message.alignUnder(title, matchingLeftAndRightWithTopPadding: 5, height: message.getHeightByWidth(title.width))
       payment.anchorInCorner(.topRight, xPad: 10, yPad: 20, width: payment.textWidth(), height: payment.textHeight())
 
       date.alignUnder(message, matchingLeftWithTopPadding: 10, width: date.textWidth(), height: date.textHeight())

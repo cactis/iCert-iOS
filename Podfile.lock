@@ -1,12 +1,14 @@
 PODS:
   - Alamofire (4.6.0)
-  - Bond (6.5.2):
+  - AssistantKit (0.4.1)
+  - Bond (6.6.0):
     - Differ (~> 1.0)
     - ReactiveKit (~> 3.8)
   - Crashlytics (3.9.3):
     - Fabric (~> 1.7.2)
+  - DateToolsSwift (2.0.3)
   - Differ (1.0.3)
-  - EFQRCode (4.1.0)
+  - EFQRCode (4.2.1)
   - Eureka (4.0.1)
   - Fabric (1.7.2)
   - Facade (1.1.1)
@@ -15,12 +17,12 @@ PODS:
   - iCarousel (1.8.3)
   - ImageRow (3.0.0):
     - Eureka (~> 4.0)
-  - IQKeyboardManagerSwift (5.0.6)
+  - IQKeyboardManagerSwift (5.0.7)
   - JSQMessagesViewController (7.3.5):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
   - KeychainSwift (10.0.0)
-  - Kingfisher (4.5.0)
+  - Kingfisher (4.6.1)
   - LoremIpsum (1.0.0)
   - Masonry (1.1.0)
   - Neon (0.4.0)
@@ -29,11 +31,13 @@ PODS:
   - PhotoSlider (0.19.0):
     - Kingfisher
   - ReactiveKit (3.8.2)
-  - ReSwift (4.0.0)
+  - ReSwift (4.0.1)
   - RSKImageCropper (2.0.0)
   - SwiftEasyKit (0.0.1):
     - Alamofire
+    - AssistantKit
     - Bond
+    - DateToolsSwift
     - Eureka
     - Facade
     - Fakery
@@ -51,6 +55,7 @@ PODS:
     - RSKImageCropper
     - SwiftRandom
     - SwiftyJSON
+    - SwiftyUserDefaults
   - SwiftRandom (1.0.0)
   - SwiftWebSocket (2.6.5)
   - SwiftyJSON (4.0.0)
@@ -65,20 +70,30 @@ DEPENDENCIES:
   - NSDate+TimeAgo
   - ReSwift
   - SwiftEasyKit (from `../SwiftEasyKit`)
-  - SwiftWebSocket
+  - SwiftWebSocket (from `https://github.com/tidwall/SwiftWebSocket.git`, branch `master`)
   - SwiftyUserDefaults
   - UITextView+Placeholder
 
 EXTERNAL SOURCES:
   SwiftEasyKit:
     :path: ../SwiftEasyKit
+  SwiftWebSocket:
+    :branch: master
+    :git: https://github.com/tidwall/SwiftWebSocket.git
+
+CHECKOUT OPTIONS:
+  SwiftWebSocket:
+    :commit: 507cdec6abd8764acd52bf280d63d17cf37a450b
+    :git: https://github.com/tidwall/SwiftWebSocket.git
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
-  Bond: 2b8c1070674fe8ba908ae11dc4e7607377d17bab
+  AssistantKit: 9ee71039dffa9dc050de945258e50e3e6bb20d5c
+  Bond: 181d6ff061f17fe87a84b12d6f0c4d76d5456ce4
   Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
+  DateToolsSwift: bf69bf9056d9e53c5c03f06e51f219b9b8b02f9e
   Differ: 0c220ac75542f5f17f91b1303b85bf07d871ecd7
-  EFQRCode: f644c667b632a47bd0256e568418d9fc75dfce19
+  EFQRCode: f3fd67049faa07adb575495c05d72a34e407a940
   Eureka: c8bd5cc07143b6f66268c208d28a246c99b41955
   Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
   Facade: 3c5c6fb1ba042d20885cfe5a290050f5b9351ca2
@@ -86,11 +101,11 @@ SPEC CHECKSUMS:
   FontAwesome.swift: b4e4c8ccbbecb12f9b592bc533ff237af3706667
   iCarousel: d782f635afac190c49bb8ee455882284cff8b85f
   ImageRow: 048123c296de9a6ac3998c415a6706c45ce480af
-  IQKeyboardManagerSwift: 02bfbb0dff71c66d0ab77d80d25dfce0c3717735
+  IQKeyboardManagerSwift: 30fb3a61de1af53a95e02b80fb54ed0a19d5ede5
   JSQMessagesViewController: 6587f56aedbcb150a8ba1d968e1ef58b1bc758b7
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   KeychainSwift: f9f7910449a0c0fd2cabc889121530dd2c477c33
-  Kingfisher: 26ae0473102b77b575da51960c932431e3745407
+  Kingfisher: 1f9157d9c02b380cbd0b7cc890161195164eb634
   LoremIpsum: 9029c55d36501b2ee0b05cc9ecda11d3a0479160
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   Neon: 7fb5a9327e7e57911843f608e08f4893a74deaf9
@@ -98,15 +113,15 @@ SPEC CHECKSUMS:
   ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
   PhotoSlider: defeb9d1fb690f95534a8832cc1bfdc90a7ba089
   ReactiveKit: d2fe54503e0b6d0fa48b2cc6e0b0f99869f13ee6
-  ReSwift: f058ef13b46ae5f463f10605ccbbb7fb04424d8d
+  ReSwift: f4012c613e13da7398827fe5aebdb938eaed40a3
   RSKImageCropper: d9a1acbc0600bf8decc8f0d21895872c99a9e4cf
-  SwiftEasyKit: 4d798b96e0d49281ff144a938d2fc59f23d47641
+  SwiftEasyKit: f245224bdef75a55bcf32a639da750e65f7d36de
   SwiftRandom: 437275c63500ddf5a565cbd56996fb23f12cfc3d
   SwiftWebSocket: 1ef8a0efb023544643bdf480c1ec4a62b204f293
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
   UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
 
-PODFILE CHECKSUM: ebe56a4184d27eca265a4a3a6aa4463b3f81b89f
+PODFILE CHECKSUM: 99a445882d631b5339b37cdb91ece1752bdbae09
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.4.0

@@ -11,11 +11,92 @@ import ObjectMapper
 //import BeastComponents
 import iCarousel
 
+
+class CertViewerViewController: DefaultViewController {
+  let backgrouncColor = UIColor.white
+  var validationUrl: String!
+  var data: Cert? { didSet {
+    photo.imaged(data?.photo?.url)
+    infoView.data = data
+    validationUrl = "/certs/\((data?.id!)!)".hostUrl()
+    qrcode.image = validationUrl.toQrcode(watermark: photo.image)
+    delayedJob { self.viewDidLayoutSubviews() }
+    }}
+  var photo = UIImageView()
+  var closeButton = UIButton(image: getIcon(.close, options: ["color": UIColor.black.lighter()]))
+  var infoView = InfoView()
+  var qrcode = UIImageView()
+  override func viewDidLoad() {
+    super.viewDidLoad()
+  }
+
+  override func layoutUI() {
+    super.layoutUI()
+    view.layout([photo, closeButton, infoView, qrcode])
+
+  }
+
+  override func styleUI() {
+    super.styleUI()
+    view.backgroundColored(backgrouncColor)
+    title = ""
+    infoView.backgroundColored(UIColor.white)
+    qrcode.bordered(1, color: K.Color.Text.normal.cgColor)
+  }
+
+  override func bindUI() {
+    super.bindUI()
+    closeButton.whenTapped {
+      self.dismiss(animated: true, completion: nil)
+    }
+    qrcode.whenTapped(self, action: #selector(qrcodeTapped))
+  }
+
+  @objc func qrcodeTapped() {
+    let vc = WebViewController(title: "認證", url: validationUrl)
+    vc.enableCloseBarButtonItem()
+    openViewController(vc)
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    closeButton.anchorInCorner(.topRight, xPad: 10, yPad: 40, width: K.BarButtonItem.size, height: K.BarButtonItem.size)
+    self.photo.anchorAndFillEdge(.top, xPad: 0, yPad: 70, otherSize: self.photo.scaledHeight(screenWidth()))
+    let w = screenWidth()
+    infoView.alignUnder(photo, matchingCenterWithTopPadding: 0, width: w, height: infoView.title.getHeightByWidth(w))
+    qrcode.alignUnder(infoView, matchingCenterWithTopPadding: 0, width: 150, height: 150)
+  }
+
+  class InfoView: DefaultView {
+    var title = UITextView()
+    var data: Cert? { didSet {
+      title.attributedText = data?.info?.toHtmlWithStyle()
+      }}
+    override func layoutUI() {
+      super.layoutUI()
+      layout([title])
+    }
+    override func styleUI() {
+      super.styleUI()
+//      title.styled
+    }
+    override func bindUI() {
+      super.bindUI()
+      title.isEditable = false
+    }
+    override func layoutSubviews() {
+      super.layoutSubviews()
+      title.fillSuperview(left: 0, right: 0, top: 0, bottom: 0)
+    }
+  }
+}
+
 class HomeViewController: DefaultViewController, iCarouselDelegate, iCarouselDataSource {
   var datas = [Cert]() { didSet { slider.reloadData() }}
   let Identifier = "CELL"
 
   func loadData() {
+    datas = []
     API.get("/certs") { (response, data) in
       let values = response.result.value as! [String: AnyObject]
       self.datas = Mapper<Cert>().mapArray(JSONObject: values["confirmed"])!
@@ -25,6 +106,16 @@ class HomeViewController: DefaultViewController, iCarouselDelegate, iCarouselDat
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     loadData()
+  }
+
+  func carousel(_ carousel: iCarousel, didSelectItemAt index: Int) {
+    let vc = CertViewerViewController()
+    let data = datas[index]
+    vc.data = data
+    currentViewController.present(vc, animated: true, completion: {
+
+    })
+//    openPhotoSlider(imageURLs: [(data.photo?.url)!], infos: [data.info!])
   }
 
   func carousel(_ carousel: iCarousel, viewForItemAt index: Int, reusing view: UIView?) -> UIView {
@@ -60,6 +151,11 @@ class HomeViewController: DefaultViewController, iCarouselDelegate, iCarouselDat
   override func bindUI() {
     super.bindUI()
     view.layout([slider])
+    loadData()
+    addRightBarButtonItem(.refresh, action: #selector(refreshTapped))
+  }
+
+  @objc func refreshTapped() {
     loadData()
   }
 

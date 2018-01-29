@@ -1,5 +1,5 @@
 //
-//  CertsViewController.swift
+//  CartsSegmentViewController.swift
 //  icert
 //
 //  Created by ctslin on 11/12/2017.
@@ -17,7 +17,7 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     _autoRun {
-      self.segment.tappedAtIndex(2)
+//      self.segment.tappedAtIndex(2)
     }
   }
 
@@ -97,17 +97,17 @@ class ConfirmedCell: CertBaseCell {
   override func layoutUI() {
     super.layoutUI()
     body.layout([photo])
-    let buttons = [UIButton(text: "條碼列印"), UIButton(text: "檢視證書"), UIButton(text: "分享")]
+    let buttons = [UIButton(text: "條碼列印"), UIButton(text: "檢視證書")]//, UIButton(text: "分享")]
     toolbar.addExtraButtons(buttons: buttons) { buttons in
       buttons[0].whenTapped {
         API.get("/certs/\(self.data.id!)/qrcode", run: { (response, data) in
           if let cert = Cert(JSON: (response.result.value as? [String: AnyObject])!) {
             self.data = cert
             let content = cert.requestCodeURL!.hostUrl()
-            let info = "<b>www.icert.pccu.edu.tw</b><br/>Issued by: GlobalSign Extended Validation CA-SHA256-G3<br/>Expires: Sunday, 23 June 2019 at 2:56:03 PM Taipei Standard Time<br/>This certificate is valid"
+//            let info = "<b>www.icert.pccu.edu.tw</b><br/>Issued by: GlobalSign Extended Validation CA-SHA256-G3<br/>Expires: Sunday, 23 June 2019 at 2:56:03 PM Taipei Standard Time<br/>This certificate is valid"
+            let info = cert.info
             content.displayQrcode(self.photo.image, info: info)
             _logForUIMode(content, title: "content")
-
           }
         })
       }
@@ -148,9 +148,14 @@ class ConfirmedCell: CertBaseCell {
 }
 
 extension String {
+
+  func toQrcode(watermark: UIImage?) -> UIImage {
+    return UIImage(cgImage: EFQRCode.generate(content: self, watermark: watermark?.cgImage)!)
+  }
+
   func displayQrcode(_ image: UIImage?, info: String?) {
-    let photo = UIImage(cgImage: EFQRCode.generate(content: self, watermark: image?.cgImage)!)
-    openPhotoSlider(images: [photo], info: info)
+    let photo = toQrcode(watermark: image)
+    openPhotoSlider(images: [photo], infos: [info!])
   }
 }
 
@@ -190,7 +195,7 @@ class CertBaseCell: BaseStatusCell {
 
   var data: Cert! { didSet {
     title.texted(data.title!)
-    expiredInfo.texted("到期日: \(data.expiredInfo!)")
+    expiredInfo.texted(data.expiredInfo!)
 //    status.texted(data.status!)
     }}
   var expiredInfo = UILabel()
@@ -200,11 +205,12 @@ class CertBaseCell: BaseStatusCell {
   }
   override func styleUI() {
     super.styleUI()
-    expiredInfo.styled().smaller()
+    expiredInfo.styled().smaller().multilinized(15)
   }
   override func layoutSubviews() {
     super.layoutSubviews()
-    expiredInfo.alignUnder(title, matchingLeftWithTopPadding: 10, width: expiredInfo.textWidth(), height: expiredInfo.textHeight())
+    expiredInfo.alignUnder(title, matchingLeftWithTopPadding: 10, width: title.width(), height: expiredInfo.getHeightByWidth(expiredInfo.textWidth()))
+//    expiredInfo._bordered()
     body.anchorAndFillEdge(.top, xPad: 0, yPad: 0, otherSize: expiredInfo.bottomEdge() + 40)
   }
 }

@@ -19,9 +19,9 @@ target 'icert' do
   pod 'SwiftyUserDefaults'#, '2.2.0'
   pod 'ReSwift'#, '2.0.0'
   pod 'UITextView+Placeholder'#, '~> 1.2'
-  pod 'SwiftWebSocket'#, '2.6.3'
+  pod 'SwiftWebSocket', :git => 'https://github.com/tidwall/SwiftWebSocket.git', :branch => 'master'
 
-  if ['ctslin'].include?(ENV['USER'])
+  if ['cactis'].include?(ENV['USER'])
     pod 'SwiftEasyKit', :path => '../SwiftEasyKit'
     else
     pod 'SwiftEasyKit', :git => 'https://github.com/cactis/SwiftEasyKit.git'
