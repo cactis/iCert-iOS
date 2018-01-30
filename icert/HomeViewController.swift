@@ -12,7 +12,8 @@ import ObjectMapper
 import iCarousel
 
 
-class CertViewerViewController: DefaultViewController {
+class CertViewerViewController: Scrollable2ViewController {
+  
   let backgrouncColor = UIColor.white
   var validationUrl: String!
   var data: Cert? { didSet {
@@ -32,16 +33,21 @@ class CertViewerViewController: DefaultViewController {
 
   override func layoutUI() {
     super.layoutUI()
-    view.layout([photo, closeButton, infoView, qrcode])
-
+    contentView.layout([photo, closeButton, infoView, qrcode])
   }
 
   override func styleUI() {
     super.styleUI()
-    view.backgroundColored(backgrouncColor)
+    contentView.backgroundColored(backgrouncColor)
     title = ""
     infoView.backgroundColored(UIColor.white)
     qrcode.bordered(1, color: K.Color.Text.normal.cgColor)
+    automaticallyAdjustsScrollViewInsets = true
+    contentView.delegate = self
+  }
+  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    if scrollView.contentOffset.y <= 3 { closeTapped() }
   }
 
   override func bindUI() {
@@ -60,11 +66,13 @@ class CertViewerViewController: DefaultViewController {
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    closeButton.anchorInCorner(.topRight, xPad: 10, yPad: 40, width: K.BarButtonItem.size, height: K.BarButtonItem.size)
-    self.photo.anchorAndFillEdge(.top, xPad: 0, yPad: 70, otherSize: self.photo.scaledHeight(screenWidth()))
+    let y: CGFloat = 0
+    closeButton.anchorInCorner(.topRight, xPad: 10, yPad: y, width: K.BarButtonItem.size, height: K.BarButtonItem.size)
+    self.photo.anchorAndFillEdge(.top, xPad: 0, yPad: y + 30, otherSize: self.photo.scaledHeight(screenWidth()))
     let w = screenWidth()
     infoView.alignUnder(photo, matchingCenterWithTopPadding: 0, width: w, height: infoView.title.getHeightByWidth(w))
     qrcode.alignUnder(infoView, matchingCenterWithTopPadding: 0, width: 150, height: 150)
+    contentView.setLastSubiewAs(qrcode)
   }
 
   class InfoView: DefaultView {
@@ -105,7 +113,7 @@ class HomeViewController: DefaultViewController, iCarouselDelegate, iCarouselDat
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    loadData()
+//    loadData()
   }
 
   func carousel(_ carousel: iCarousel, didSelectItemAt index: Int) {
@@ -113,7 +121,6 @@ class HomeViewController: DefaultViewController, iCarouselDelegate, iCarouselDat
     let data = datas[index]
     vc.data = data
     currentViewController.present(vc, animated: true, completion: {
-
     })
 //    openPhotoSlider(imageURLs: [(data.photo?.url)!], infos: [data.info!])
   }
@@ -126,15 +133,17 @@ class HomeViewController: DefaultViewController, iCarouselDelegate, iCarouselDat
       itemView = view
       label = itemView.viewWithTag(1) as! UILabel
     } else {
-      itemView = UIImageView(frame: CGRect(x: 0, y: 0, width: screenWidth(), height: 400))
-      itemView.styledAsFill().bordered(20, color: UIColor.white.cgColor).backgroundColored(UIColor.lightGray.lighter())
+      let w = screenWidth()
+      itemView = UIImageView(frame: CGRect(x: 0, y: 0, width: w, height: 400))
+      itemView.styled().bordered(20, color: UIColor.white.cgColor).backgroundColored(UIColor.lightGray.lighter())
       itemView.imaged(data.photo?.thumb, placeholder: "loading")
+      itemView.frame = CGRect(x: 0, y: 0, width: w, height: itemView.scaledHeight(w))
       itemView.contentMode = .center
 
       label = UILabel()
       label.backgroundColor = .clear
       label.textAlignment = .center
-//      label.font = label.font.withSize(20)
+      label.backgroundColored(UIColor.white.withAlphaComponent(0.9))
       label.adjustsFontSizeToFitWidth = true
       label.tag = 1
       itemView.addSubview(label)
