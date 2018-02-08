@@ -39,6 +39,7 @@ class Configure {
     K.Color.navigator = UIColor.fromHex("649C9B").lighter()
     K.Color.tabBarBackgroundColor = UIColor.fromHex("E63D71").darker()
     K.Color.buttonBg = K.Color.tabBarBackgroundColor.lighter(0.05)
+    K.Color.tabBar = UIColor.white
     K.Color.button = K.Color.tabBar
     K.CSS.style = "body {font-family: Helvetica,Arial; margin: 1em; font-size: 1.2em; line-height: 1.2; color: \(K.Color.Text.normal.lighter(0).hexString);} a{color: \(K.Color.buttonBg)} img{margin: 2em; height: auto; border: 1px solid #333;} table{padding: 2em 0.5em; width: 100%} th{break-line:no-wrap; text-align: right}"
 
