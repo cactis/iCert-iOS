@@ -34,6 +34,7 @@ class CertViewerViewController: Scrollable2ViewController {
   override func layoutUI() {
     super.layoutUI()
     contentView.layout([photo, closeButton, infoView, qrcode])
+    closeButton.isHidden = true
   }
 
   override func styleUI() {
@@ -56,6 +57,11 @@ class CertViewerViewController: Scrollable2ViewController {
       self.dismiss(animated: true, completion: nil)
     }
     qrcode.whenTapped(self, action: #selector(qrcodeTapped))
+    view.whenDoubleTapped(self, action: #selector(viewDoubleTapped))
+  }
+  
+  @objc func viewDoubleTapped() {
+    closeTapped()
   }
 
   @objc func qrcodeTapped() {

@@ -94,11 +94,11 @@ class AppDelegate: DefaultAppDelegate {
 
   }
 
-//  func icon(_ name: FontAwesome, selected: Bool = false) -> UIImage {
-//    let size = 30
-//    let color = selected ? K.Color.tabBar : K.Color.tabBarUnselected
-//    return getIcon(name, options: ["color": color, "size": size])
-//  }
+  func icon(_ name: FontAwesome, selected: Bool = false) -> UIImage {
+    let size = 30
+    let color = selected ? K.Color.tabBar : K.Color.tabBarUnselected
+    return getIcon(name, options: ["color": color, "size": size])
+  }
 
 
 }
