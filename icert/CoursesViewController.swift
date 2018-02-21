@@ -23,9 +23,9 @@ class CoursesViewController: ApplicationTableViewController {
   var collectionData = [Course]() { didSet { tableView.reloadData() }}
   override func viewDidLoad() {
     super.viewDidLoad()
-    _autoRun {
-      self.tabBarController?.selectedIndex = 1
-    }
+//    _autoRun {
+//      self.tabBarController?.selectedIndex = 1
+//    }
   }
 
   override func layoutUI() {

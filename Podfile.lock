@@ -57,7 +57,7 @@ PODS:
     - SwiftyJSON
     - SwiftyUserDefaults
   - SwiftRandom (1.0.0)
-  - SwiftWebSocket (2.6.5)
+  - SwiftWebSocket (2.7.0)
   - SwiftyJSON (4.0.0)
   - SwiftyUserDefaults (3.0.0)
   - UITextView+Placeholder (1.2.0)
@@ -83,7 +83,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SwiftWebSocket:
-    :commit: 507cdec6abd8764acd52bf280d63d17cf37a450b
+    :commit: 6567a9d2add5cf37674d4ed0fdd211efd57bd603
     :git: https://github.com/tidwall/SwiftWebSocket.git
 
 SPEC CHECKSUMS:
@@ -117,7 +117,7 @@ SPEC CHECKSUMS:
   RSKImageCropper: d9a1acbc0600bf8decc8f0d21895872c99a9e4cf
   SwiftEasyKit: f245224bdef75a55bcf32a639da750e65f7d36de
   SwiftRandom: 437275c63500ddf5a565cbd56996fb23f12cfc3d
-  SwiftWebSocket: 1ef8a0efb023544643bdf480c1ec4a62b204f293
+  SwiftWebSocket: 612c9729fd503cb6b0b8b45390c788686dac306f
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
   SwiftyUserDefaults: 0f1d45fc3aafb9064dac661e367f8f83fe21a4b4
   UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff

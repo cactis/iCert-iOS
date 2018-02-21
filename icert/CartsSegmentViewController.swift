@@ -16,9 +16,9 @@ class CartsSegmentViewController: ApplicationSegmentViewController {
   var collectionDatas = [[Cert]]()
   override func viewDidLoad() {
     super.viewDidLoad()
-    _autoRun {
+//    _autoRun {
 //      self.segment.tappedAtIndex(2)
-    }
+//    }
   }
 
   override func layoutUI() {
@@ -174,7 +174,7 @@ class UnconfirmedCell: CertCell {
 }
 class CertCell: CertBaseCell {
   override var data: Cert! { didSet {
-    status.texted(data.status)
+//    status.texted(data.status)
 //    status.html(data.status?.toHtmlWithStyle())
     }}
   override func bindUI() {

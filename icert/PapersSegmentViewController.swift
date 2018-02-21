@@ -39,9 +39,9 @@ class PapersSegmentViewController: ApplicationSegmentViewController {
   var collectionDatas = [[Paper]]()
   override func viewDidLoad() {
     super.viewDidLoad()
-    _autoRun {
+//    _autoRun {
 //      self.segment.tappedAtIndex(5)
-    }
+//    }
 
   }
 
